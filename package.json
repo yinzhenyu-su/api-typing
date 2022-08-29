@@ -1,0 +1,38 @@
+{
+  "name": "api-typing",
+  "version": "0.1.0",
+  "description": "Axios based HTTP client with type hint",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "src"
+  ],
+  "bin": {
+    "get-types": "./bin/cli.js"
+  },
+  "main": "./src/index.js",
+  "module": "./dist/index.js",
+  "type": "module",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build-fast": "tsup",
+    "build": "pnpm run build-fast -- --dts-resolve",
+    "test": "vitest run",
+    "prepublishOnly": "pnpm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "openapi-typescript": "^5.4.0"
+  },
+  "devDependencies": {
+    "@egoist/prettier-config": "1.0.0",
+    "prettier": "2.5.1",
+    "tsup": "6.0.1",
+    "typescript": "4.5.4",
+    "vitest": "0.12.6"
+  }
+}
