@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [release, alpha, beta]
   pull_request:
     branches: [main]
 
@@ -70,7 +70,7 @@ jobs:
             ${{ runner.os }}-
       - run: npm i -g pnpm
       - run: pnpm i
-      - run: pnpx semantic-release --branches main
+      - run: pnpx semantic-release --branches release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
