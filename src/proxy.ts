@@ -21,7 +21,7 @@ export const requestProxyHandler = {
     const params = requestOption.params as Parsable
     if (params) {
       const replacer = replacerFactory(params)
-      requestOption.url = requestOption.url?.replaceAll(/({)(.*?)(})/g, replacer)
+      requestOption.url = requestOption.url?.replace(/({)(.*?)(})/g, replacer)
     }
 
     // transform obj to querystring
