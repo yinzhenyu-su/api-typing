@@ -14,7 +14,9 @@
     "noEmit": true,
     "outDir": "dist",
     "resolveJsonModule": true,
-    "lib": ["ESNext"]
+    "lib": ["ESNext"],
+    "baseUrl": ".",
+    "paths": {}
   },
   "include": ["src/**/*"]
 }

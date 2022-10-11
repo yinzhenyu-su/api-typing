@@ -1,7 +1,16 @@
 {
   "name": "api-typing",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Axios based HTTP client with type hint",
+  "author": {
+    "email": "sharkrain@outlook.com",
+    "name": "yinzhenyu",
+    "url": "https://blog.bgm.fun"
+  },
+  "homepage": "https://github.com/yinzhenyu-su/api-typing",
+  "maintainers": [
+    "yinzhenyu-su"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -25,13 +34,17 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "^4.14.185",
+    "@types/qs": "^6.9.7",
     "axios": "^0.27.2",
-    "openapi-typescript": "^5.4.0"
+    "lodash": "^4.17.21",
+    "openapi-typescript": "^5.4.0",
+    "qs": "^6.11.0"
   },
   "devDependencies": {
     "@egoist/prettier-config": "1.0.0",
     "prettier": "2.5.1",
-    "tsup": "6.0.1",
+    "tsup": "^6.2.3",
     "typescript": "4.5.4",
     "vitest": "0.12.6"
   }
