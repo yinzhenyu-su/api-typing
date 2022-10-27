@@ -156,14 +156,14 @@ interface InitOptions {
   jsonSchemaPath: string
   /**
    * auto generated openapi-ts definition path
-   * @default ./api-typing.d.ts
+   * @default ./api-typing-meta.d.ts
    */
   definitionPath?: string
 }
 
 export const getDefinition = async ({
   jsonSchemaPath,
-  definitionPath = "./api-typing.d.ts",
+  definitionPath = "./api-typing-meta.d.ts",
 }: InitOptions) => {
   let schemas = await axios.get(jsonSchemaPath).then((res) => res.data)
   schemas = JSON.parse(decodeURI(JSON.stringify(schemas)))

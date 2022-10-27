@@ -3,3 +3,4 @@ node_modules
 dist
 *.log
 api-typing.d.ts
+api-typing-meta.d.ts
