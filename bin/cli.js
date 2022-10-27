@@ -6,4 +6,7 @@ if (!argv.length) {
   console.log('info: please define a jsonSchemaPath.')
   process.exit();
 }
-getDefinition({ jsonSchemaPath: argv[0] });
+async function run() {
+  return await getDefinition({ jsonSchemaPath: argv[0], definitionPath: argv[1] })
+}
+run();

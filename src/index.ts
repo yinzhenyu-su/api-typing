@@ -1,4 +1,4 @@
-import { writeFile } from "fs"
+import { writeFileSync } from "fs"
 import path from "path"
 import openapiTs from "openapi-typescript"
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
@@ -169,20 +169,13 @@ export const getDefinition = async ({
   schemas = JSON.parse(decodeURI(JSON.stringify(schemas)))
   const output = await openapiTs(schemas)
   let success = false
-  await writeFile(
+  writeFileSync(
     path.join(path.dirname("."), `${definitionPath}`),
     output,
     { encoding: "utf8" },
-    (err: any) => {
-      if (err) {
-        throw err
-      } else {
-        console.log("generate api types success!")
-      }
-    },
   )
   success = true
-  return success
+  return Promise.resolve(success)
 }
 
 export * from "./projectApiHelper"

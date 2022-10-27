@@ -2,21 +2,24 @@
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,
-    "target": "es2020",
-    "module": "CommonJS",
+    "target": "ES2015",
+    "module": "ESNext",
     "strict": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
     "allowJs": true,
     "noEmit": true,
+    "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "resolveJsonModule": true,
-    "lib": ["ESNext"],
+    "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "api-typing": ["."]
+    }
   },
   "include": ["src/**/*"]
 }

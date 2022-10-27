@@ -22,8 +22,7 @@
   "bin": {
     "get-types": "./bin/cli.js"
   },
-  "main": "./src/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
   "type": "module",
   "types": "./src/index.ts",
   "scripts": {
@@ -35,6 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/lodash": "^4.14.185",
+    "@types/node": "^16.18.2",
     "@types/qs": "^6.9.7",
     "axios": "^0.27.2",
     "lodash": "^4.17.21",
