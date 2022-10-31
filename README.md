@@ -41,17 +41,11 @@ pnpm i api-typing
 
     the type definition file would be generated in your project root.
 
-3.  declare module 'api-typing' with auto-generated definetions, it is in your project root. make sure your `tsconfig.json` include this declare.
+3.  after `api-typing-meta.d.ts` gengrated in your project root. make sure your `tsconfig.json` include this declare.
 
-    ```ts
-    import { paths, components, external, operations } from "./api-typing"
-    declare module "api-typing" {
-      interface ApiTypingMeta {
-        paths: paths
-        components: components
-        external: external
-        operations: operations
-      }
+    ```json
+    {
+      "include": ["api-typing-meta.d.ts"]
     }
     ```
 

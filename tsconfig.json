@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "target": "ES2015",
@@ -15,11 +16,18 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "resolveJsonModule": true,
-    "lib": ["DOM", "ESNext"],
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
     "baseUrl": ".",
     "paths": {
-      "api-typing": ["."]
+      "api-typing": [
+        "."
+      ]
     }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*",
+  ],
 }

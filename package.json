@@ -29,7 +29,10 @@
     "build-fast": "tsup",
     "build": "pnpm run build-fast -- --dts-resolve",
     "test": "vitest run",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "license": "MIT",
   "dependencies": {
@@ -46,6 +49,8 @@
     "prettier": "2.5.1",
     "tsup": "^6.2.3",
     "typescript": "4.5.4",
-    "vitest": "0.12.6"
+    "vitepress": "1.0.0-alpha.26",
+    "vitest": "0.12.6",
+    "vue": "^3.2.41"
   }
 }
