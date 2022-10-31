@@ -1,24 +1,24 @@
 interface ApiTyping {
-  paths: {};
-  components: {};
-  operations: {};
-  external: {};
+  paths: {}
+  components: {}
+  operations: {}
+  external: {}
 }
 
-export declare interface ApiTypingMeta extends ApiTyping { }
+export declare interface ApiTypingMeta extends ApiTyping {}
 
-type paths = ApiTypingMeta['paths']
-type components = ApiTypingMeta['components']
-type operations = ApiTypingMeta['operations']
-type external = ApiTypingMeta['external']
+type paths = ApiTypingMeta["paths"]
+type components = ApiTypingMeta["components"]
+type operations = ApiTypingMeta["operations"]
+type external = ApiTypingMeta["external"]
 
-export type Paths<T = paths> = T;
+type Paths<T = paths> = T
 
-export type Components<T = components> = T;
+type Components<T = components> = T
 
-export type Operations<T = operations> = T;
+type Operations<T = operations> = T
 
-export type External<T = external> = T;
+type External<T = external> = T
 
 /**
  * 根据 http method 获取对应的urlkey
@@ -26,46 +26,53 @@ export type External<T = external> = T;
 export type PathKeyOfMethod<R extends Method> = {
   [Key in keyof Paths]: Paths[Key] extends {
     // eslint-disable-next-line no-unused-vars
-    [k in R]: any;
+    [k in R]: any
   }
-  ? Key
-  : never;
-}[keyof Paths];
+    ? Key
+    : never
+}[keyof Paths]
 
-export type PathKeyUnion =
+type PathKeyUnion =
   | PathKeyOfMethod<"get">
   | PathKeyOfMethod<"post">
   | PathKeyOfMethod<"put">
   | PathKeyOfMethod<"delete">
   | PathKeyOfMethod<"patch">
   | PathKeyOfMethod<"head">
-  | PathKeyOfMethod<"options">;
+  | PathKeyOfMethod<"options">
 
 /**
  * 从urlkey 中选定一个url
  */
-export type PathKey<T extends Method, R extends PathKeyOfMethod<T>> = Extract<
+type PathKey<T extends Method, R extends PathKeyOfMethod<T>> = Extract<
   PathKeyOfMethod<T>,
   R
->;
+>
 
-type A<T extends PathKeyUnion> = Paths[T];
+type A<T extends PathKeyUnion> = Paths[T]
 
-export type Get<T extends PathKeyUnion> = Extract<keyof A<T>, "get">;
-export type Post<T extends PathKeyUnion> = Extract<keyof A<T>, "post">;
-export type Put<T extends PathKeyUnion> = Extract<keyof A<T>, "put">;
-export type Patch<T extends PathKeyUnion> = Extract<keyof A<T>, "patch">;
-export type Delete<T extends PathKeyUnion> = Extract<keyof A<T>, "delete">;
-export type Head<T extends PathKeyUnion> = Extract<keyof A<T>, "head">;
-export type Options<T extends PathKeyUnion> = Extract<keyof A<T>, "options">;
+type Get<T extends PathKeyUnion> = Extract<keyof A<T>, "get">
+type Post<T extends PathKeyUnion> = Extract<keyof A<T>, "post">
+type Put<T extends PathKeyUnion> = Extract<keyof A<T>, "put">
+type Patch<T extends PathKeyUnion> = Extract<keyof A<T>, "patch">
+type Delete<T extends PathKeyUnion> = Extract<keyof A<T>, "delete">
+type Head<T extends PathKeyUnion> = Extract<keyof A<T>, "head">
+type Options<T extends PathKeyUnion> = Extract<keyof A<T>, "options">
 
-export type Method = "get" | "post" | "put" | "patch" | "delete" | "head" | "options";
+export type Method =
+  | "get"
+  | "post"
+  | "put"
+  | "patch"
+  | "delete"
+  | "head"
+  | "options"
 
 // 根据 method 获取url
 type ExtractMethod<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = A<R>[Extract<keyof A<R>, T>];
+> = A<R>[Extract<keyof A<R>, T>]
 
 /**
  *
@@ -73,7 +80,7 @@ type ExtractMethod<
 type ExtractMethodParam<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "parameters">];
+> = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "parameters">]
 
 /**
  * 根据 url 和 http method 提取request path 传参
@@ -81,7 +88,7 @@ type ExtractMethodParam<
 export type ExtractParamPath<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodParam<T, R>[Extract<keyof ExtractMethodParam<T, R>, "path">];
+> = ExtractMethodParam<T, R>[Extract<keyof ExtractMethodParam<T, R>, "path">]
 
 /**
  * 根据 url 和 http method 提取request query 传参
@@ -89,29 +96,29 @@ export type ExtractParamPath<
 export type ExtractParamQuery<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodParam<T, R>[Extract<keyof ExtractMethodParam<T, R>, "query">];
+> = ExtractMethodParam<T, R>[Extract<keyof ExtractMethodParam<T, R>, "query">]
 
 // ------------------- JSON Obj
 export type ExtractMethodRequestBody<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "requestBody">];
+> = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "requestBody">]
 
 export type ExtractMethodRequestBodyContent<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodRequestBody<T, R>[Extract<
-    keyof ExtractMethodRequestBody<T, R>,
-    "content"
-  >];
+> = ExtractMethodRequestBody<T, R>[Extract<
+  keyof ExtractMethodRequestBody<T, R>,
+  "content"
+>]
 
 type ExtractMethodRequestBodyContentJSON<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodRequestBodyContent<T, R>[Extract<
-    keyof ExtractMethodRequestBodyContent<T, R>,
-    "application/json"
-  >];
+> = ExtractMethodRequestBodyContent<T, R>[Extract<
+  keyof ExtractMethodRequestBodyContent<T, R>,
+  "application/json"
+>]
 
 /**
  * 根据http method 和 url 提取requestBody json
@@ -119,24 +126,26 @@ type ExtractMethodRequestBodyContentJSON<
 export type ExtractRequestBodyJSON<
   T extends Exclude<Method, "get" | "head" | "options" | "delete">,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodRequestBodyContentJSON<T, R>;
+> = ExtractMethodRequestBodyContentJSON<T, R>
 
 type ExtractMethodResponse<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "responses">];
+> = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "responses">]
 
-export type ExtractMethodResponseAuto<M extends Method, R extends PathKeyOfMethod<M>> = ExtractMethodResponse<M, R>[Extract<keyof ExtractMethodResponse<M, R>, 'default'>]
-
+export type ExtractMethodResponseAuto<
+  M extends Method,
+  R extends PathKeyOfMethod<M>,
+> = ExtractMethodResponse<M, R>[Extract<
+  keyof ExtractMethodResponse<M, R>,
+  "default"
+>]
 
 // TODO 根据response code获取对应数据
 type ExtractMethodResponse200<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodResponse<T, R>[Extract<
-    keyof ExtractMethodResponse<T, R>,
-    200
-  >];
+> = ExtractMethodResponse<T, R>[Extract<keyof ExtractMethodResponse<T, R>, 200>]
 
 // type StatusCode = 200 | 201 | 304 | 401 | 403 | 500 | 502 | 'default'
 // type ExtractStatusCode<T extends Method, R extends PathKeyOfMethod<T>> = Extract<keyof ExtractMethodResponse<T, R>, StatusCode> extends never ? never : Extract<keyof ExtractMethodResponse<T, R>, StatusCode>
@@ -146,18 +155,18 @@ type ExtractMethodResponse200<
 type ExtractMethodResponse200Content<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodResponse200<T, R>[Extract<
-    keyof ExtractMethodResponse200<T, R>,
-    "content"
-  >];
+> = ExtractMethodResponse200<T, R>[Extract<
+  keyof ExtractMethodResponse200<T, R>,
+  "content"
+>]
 
 type ExtractMethodResponse200ContentJSON<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodResponse200Content<T, R>[Extract<
-    keyof ExtractMethodResponse200Content<T, R>,
-    "application/json"
-  >];
+> = ExtractMethodResponse200Content<T, R>[Extract<
+  keyof ExtractMethodResponse200Content<T, R>,
+  "application/json"
+>]
 
 /**
  * 根据 http method 和 url 提取200响应JSON数据
@@ -165,5 +174,4 @@ type ExtractMethodResponse200ContentJSON<
 export type Extract200JSON<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-  > = ExtractMethodResponse200ContentJSON<T, R>;
-
+> = ExtractMethodResponse200ContentJSON<T, R>

@@ -10,7 +10,7 @@ import type { CreateConfig, ApiTypingRequestConfig } from "./CoreType"
 
 /**
  * create api-typing instance
- * @param config @link CreateConfig
+ * @param config CreateConfig
  * @returns ApiTypingInstance
  */
 export const create = (config?: CreateConfig) => {
@@ -72,38 +72,32 @@ export const create = (config?: CreateConfig) => {
 
   const del = <T extends PathKeyOfMethod<"delete">>(
     url: T,
-    data?: any,
     config?: ApiTypingRequestConfig<"delete", T>,
   ): Promise<AxiosResponse<Extract200JSON<"delete", T>>> =>
     api.request({
       ...config,
       method: "delete",
       url,
-      data,
     })
 
   const head = <T extends PathKeyOfMethod<"head">>(
     url: T,
-    data?: any,
     config?: ApiTypingRequestConfig<"head", T>,
   ): Promise<AxiosResponse<Extract200JSON<"head", T>>> =>
     api.request({
       ...config,
       method: "head",
       url,
-      data,
     })
 
   const options = <T extends PathKeyOfMethod<"options">>(
     url: T,
-    data?: any,
     config?: ApiTypingRequestConfig<"options", T>,
   ): Promise<AxiosResponse<Extract200JSON<"options", T>>> =>
     api.request({
       ...config,
       method: "options",
       url,
-      data,
     })
   const apiTyping = {
     ...api,
@@ -118,3 +112,7 @@ export const create = (config?: CreateConfig) => {
   }
   return apiTyping
 }
+/**
+ * ApiTypingInstance
+ */
+export type ApiTypingInstance = ReturnType<typeof create>

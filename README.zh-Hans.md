@@ -71,19 +71,15 @@ pnpm run get-types
 
 然后检查项目的根目录有没有生成 api-typing-meta.d.ts，如果没有请检查上一步是否出错。
 
-### 添加 api-typing 声明
+### 配置 tsconfig.json
 
-确保 api-typing-meta.d.ts 在根目录成功生成后，在项目根目录的`env.d.ts`中添加如下内容
+确保 api-typing-meta.d.ts 在根目录成功生成后，将该文件添加到 tsconfig.json 的 **include** 字段中
 
-```ts
-import { paths, components, external, operations } from "./api-typing-meta"
-declare module "api-typing" {
-  interface ApiTypingMeta {
-    paths: paths
-    components: components
-    external: external
-    operations: operations
-  }
+**tsconfig.json**
+
+```json
+{
+  "include": ["api-typing-meta.d.ts"]
 }
 ```
 

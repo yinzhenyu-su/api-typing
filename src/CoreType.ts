@@ -21,7 +21,7 @@ export type ApiTypingRequestRaw = Omit<AxiosRequestConfig, "params"> & {
 export type ApiTypingRequestConfig<
   M extends Method,
   T extends PathKeyOfMethod<M>,
-> = Omit<AxiosRequestConfig, "params"> & {
+> = Omit<AxiosRequestConfig, "params" | "method" | "url"> & {
   // TODO动态require
   /**
    * 查询参数
