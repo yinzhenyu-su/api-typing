@@ -4,8 +4,8 @@ import type {
   Extract200JSON,
   ExtractRequestBodyJSON,
   PathKeyOfMethod,
-} from "./ProjectApiHelper"
-import { requestProxyHandler } from "./Proxy"
+} from "./ApiHelper"
+import { requestProxyHandler } from "./ApiTypingProxy"
 import type { CreateConfig, ApiTypingRequestConfig } from "./CoreType"
 
 /**

@@ -4,7 +4,7 @@ import type {
   ExtractParamQuery,
   Method,
   PathKeyOfMethod,
-} from "./ProjectApiHelper"
+} from "./ApiHelper"
 
 export type ApiTypingRequestRaw = Omit<AxiosRequestConfig, "params"> & {
   // TODO动态require
