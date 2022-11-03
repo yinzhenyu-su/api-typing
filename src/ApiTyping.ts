@@ -2,11 +2,10 @@ import axios, { type AxiosResponse } from "axios"
 
 import type {
   Extract200JSON,
-  ExtractRequestBodyJSON,
   PathKeyOfMethod,
 } from "./ApiHelper"
 import { requestProxyHandler } from "./ApiTypingProxy"
-import type { CreateConfig, ApiTypingRequestConfig } from "./CoreType"
+import type { CreateConfig, PostArgs, GetArgs, PutArgs, PatchArgs, DelArgs, HeadArgs, OptionsArgs } from "./CoreType"
 
 /**
  * create api-typing instance
@@ -22,8 +21,7 @@ export const create = (config?: CreateConfig) => {
   api.request = proxy
 
   const get = <T extends PathKeyOfMethod<"get">>(
-    url: T,
-    config?: ApiTypingRequestConfig<"get", T>,
+    ...[url, config]: GetArgs<T>
   ) =>
     api.request<
       Extract200JSON<"get", T>,
@@ -35,9 +33,7 @@ export const create = (config?: CreateConfig) => {
     })
 
   const post = <T extends PathKeyOfMethod<"post">>(
-    url: T,
-    data: ExtractRequestBodyJSON<"post", T>,
-    config?: ApiTypingRequestConfig<"post", T>,
+    ...[url, data, config]: PostArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"post", T>>> =>
     api.request({
       ...config,
@@ -47,9 +43,7 @@ export const create = (config?: CreateConfig) => {
     })
 
   const put = <T extends PathKeyOfMethod<"put">>(
-    url: T,
-    data?: ExtractRequestBodyJSON<"put", T>,
-    config?: ApiTypingRequestConfig<"put", T>,
+    ...[url, data, config]: PutArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"put", T>>> =>
     api.request({
       ...config,
@@ -59,9 +53,7 @@ export const create = (config?: CreateConfig) => {
     })
 
   const patch = <T extends PathKeyOfMethod<"patch">>(
-    url: T,
-    data?: ExtractRequestBodyJSON<"patch", T>,
-    config?: ApiTypingRequestConfig<"patch", T>,
+    ...[url, data, config]: PatchArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"patch", T>>> =>
     api.request({
       ...config,
@@ -71,8 +63,7 @@ export const create = (config?: CreateConfig) => {
     })
 
   const del = <T extends PathKeyOfMethod<"delete">>(
-    url: T,
-    config?: ApiTypingRequestConfig<"delete", T>,
+    ...[url, config]: DelArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"delete", T>>> =>
     api.request({
       ...config,
@@ -81,8 +72,7 @@ export const create = (config?: CreateConfig) => {
     })
 
   const head = <T extends PathKeyOfMethod<"head">>(
-    url: T,
-    config?: ApiTypingRequestConfig<"head", T>,
+    ...[url, config]: HeadArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"head", T>>> =>
     api.request({
       ...config,
@@ -91,8 +81,7 @@ export const create = (config?: CreateConfig) => {
     })
 
   const options = <T extends PathKeyOfMethod<"options">>(
-    url: T,
-    config?: ApiTypingRequestConfig<"options", T>,
+    ...[url, config]: OptionsArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"options", T>>> =>
     api.request({
       ...config,
