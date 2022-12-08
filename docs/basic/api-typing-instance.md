@@ -3,10 +3,10 @@
 ## 创建 ApiTypingInstance
 
 ```ts
-import { create } from "api-typing"
-// 调用create接口会创建ApiTypingInstance
+import { createHTTPClient } from "api-typing"
+// 调用createHTTPClient接口会创建ApiTypingInstance
 // ApiTypingInstance 可以用来发送请求，设置当前请求参数等
-const instance = create()
+const instance = createHTTPClient()
 ```
 
 ## ApiTypingInstance 的属性和方法

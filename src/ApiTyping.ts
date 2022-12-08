@@ -5,15 +5,15 @@ import type {
   PathKeyOfMethod,
 } from "./ApiHelper"
 import { requestProxyHandler } from "./ApiTypingProxy"
-import type { CreateConfig, PostArgs, GetArgs, PutArgs, PatchArgs, DelArgs, HeadArgs, OptionsArgs } from "./CoreType"
+import type { CreateHTTPClientConfig, PostArgs, GetArgs, PutArgs, PatchArgs, DelArgs, HeadArgs, OptionsArgs } from "./CoreType"
 
 /**
- * create api-typing instance
- * @param config CreateConfig
+ * createHTTPClient api-typing instance
+ * @param config CreateHTTPClientConfig
  * @returns ApiTypingInstance
  */
-export const create = (config?: CreateConfig) => {
-  const api = axios.create(config)
+export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
+  const api = axios.createHTTPClient(config)
 
   const { CancelToken } = axios
   const cancelToken = CancelToken.source()
@@ -104,4 +104,4 @@ export const create = (config?: CreateConfig) => {
 /**
  * ApiTypingInstance
  */
-export type ApiTypingInstance = ReturnType<typeof create>
+export type ApiTypingInstance = ReturnType<typeof createHTTPClient>

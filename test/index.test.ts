@@ -1,6 +1,6 @@
 import { test, it, expect } from "vitest"
 import { existsSync } from "fs"
-import { create, getDefinition } from "../src/index"
+import { createHTTPClient, getDefinition } from "../src/index"
 import { requestProxyHandler } from "../src/ApiTypingProxy"
 import type { ApiTypingRequestRaw } from "../src/CoreType"
 import type {

@@ -31,7 +31,7 @@
 ## error
 
 ```ts
-create.get("/pets").catch(function (error) {
+createHTTPClient.get("/pets").catch(function (error) {
   if (error.response) {
     // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
     console.log(error.response.data)
@@ -53,7 +53,7 @@ create.get("/pets").catch(function (error) {
 使用 `validateStatus` 配置选项，可以自定义抛出错误的 HTTP code。
 
 ```ts
-create.get("/pets", {
+createHTTPClient.get("/pets", {
   validateStatus: function (status) {
     return status < 500 // Resolve only if the status code is less than 500
   },
@@ -63,7 +63,7 @@ create.get("/pets", {
 使用 `toJSON` 可以获取更多关于 HTTP 错误的信息。
 
 ```ts
-create.get("/pets").catch(function (error) {
+createHTTPClient.get("/pets").catch(function (error) {
   console.log(error.toJSON())
 })
 ```

@@ -52,8 +52,8 @@ pnpm i api-typing
 4.  import and enjoy it!
 
     ```ts
-    import { create } from "api-typing"
-    create({ baseURL: "your baseURL" })
+    import { createHTTPClient } from "api-typing"
+    createHTTPClient({ baseURL: "your baseURL" })
       .post("choose/url/with/hint", {
         /**
          * request field with type-hint
