@@ -70,9 +70,9 @@ pnpm run get-types
 ## 开始使用吧
 
 ```typescript
-import { create } from "api-typing"
-// 这里create生成的是继承自 axios instance 的实例，你可以像使用axios一样添加你自己的interceptor
-create({ baseURL: "your baseURL" })
+import { createHTTPClient } from "api-typing"
+// 这里createHTTPClient生成的是继承自 axios instance 的实例，你可以像使用axios一样添加你自己的interceptor
+createHTTPClient({ baseURL: "your baseURL" })
   // post 的 url无需手动填写，会根据你的项目自动提示可用的url，其他的请求方式同理
   .post("choose/url/with/hint", {
     /**

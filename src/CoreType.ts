@@ -95,7 +95,7 @@ export type OptionsArgs<T extends PathKeyOfMethod<"options">> =
 /**
  * 创建api-typing实例的参数
  */
-export type CreateConfig = Pick<
+export type CreateHTTPClientConfig = Pick<
   AxiosRequestConfig,
   | "baseURL"
   | "transformRequest"
