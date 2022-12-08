@@ -1,23 +1,8 @@
 import { test, it, expect } from "vitest"
 import { existsSync } from "fs"
-import { createHTTPClient, getDefinition } from "../src/index"
+import { getDefinition } from "../src/ApiMetaInit"
 import { requestProxyHandler } from "../src/ApiTypingProxy"
 import type { ApiTypingRequestRaw } from "../src/CoreType"
-import type {
-  components,
-  paths,
-  external,
-  operations,
-} from "../api-typing-meta"
-
-declare module "../src/index" {
-  interface ApiTypingMeta {
-    components: components
-    paths: paths
-    external: external
-    operations: operations
-  }
-}
 
 test("test proxy", async () => {
   const request = (config: ApiTypingRequestRaw) => {
