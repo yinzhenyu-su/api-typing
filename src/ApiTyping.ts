@@ -1,11 +1,17 @@
 import axios, { type AxiosResponse } from "axios"
 
-import type {
-  Extract200JSON,
-  PathKeyOfMethod,
-} from "./ApiHelper"
+import type { Extract200JSON, PathKeyOfMethod } from "./ApiHelper"
 import { requestProxyHandler } from "./ApiTypingProxy"
-import type { CreateHTTPClientConfig, PostArgs, GetArgs, PutArgs, PatchArgs, DelArgs, HeadArgs, OptionsArgs } from "./CoreType"
+import type {
+  CreateHTTPClientConfig,
+  PostArgs,
+  GetArgs,
+  PutArgs,
+  PatchArgs,
+  DelArgs,
+  HeadArgs,
+  OptionsArgs,
+} from "./CoreType"
 
 /**
  * createHTTPClient api-typing instance
@@ -13,7 +19,7 @@ import type { CreateHTTPClientConfig, PostArgs, GetArgs, PutArgs, PatchArgs, Del
  * @returns ApiTypingInstance
  */
 export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
-  const api = axios.createHTTPClient(config)
+  const api = axios.create(config)
 
   const { CancelToken } = axios
   const cancelToken = CancelToken.source()

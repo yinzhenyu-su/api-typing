@@ -14,11 +14,11 @@
     "allowJs": true,
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist",
+    "outDir": "outdir",
     "resolveJsonModule": true,
     "lib": [
       "DOM",
-      "ESNext"
+      "ESNext",
     ],
     "baseUrl": ".",
     "paths": {

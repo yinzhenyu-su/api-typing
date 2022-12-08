@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@egoist/prettier-config': 1.0.0
   '@types/lodash': ^4.14.185
-  '@types/node': ^16.18.2
+  '@types/node': '14'
   '@types/qs': ^6.9.7
   axios: ^0.27.2
   lodash: ^4.17.21
@@ -18,7 +18,7 @@ specifiers:
 
 dependencies:
   '@types/lodash': 4.14.185
-  '@types/node': 16.18.2
+  '@types/node': 14.18.34
   '@types/qs': 6.9.7
   axios: 0.27.2
   lodash: 4.17.21
@@ -286,8 +286,8 @@ packages:
     resolution: {integrity: sha512-evMDG1bC4rgQg4ku9tKpuMh5iBNEwNa3tf9zRHdP1qlv+1WUg44xat4IxCE14gIpZRGUUWAx2VhItCZc25NfMA==}
     dev: false
 
-  /@types/node/16.18.2:
-    resolution: {integrity: sha512-KIGQJyya+opDCFvDSZMNNS899ov5jlNdtN7PypgHWeb8e+5vWISdwTRo/ClsNVlmDihzOGqFyNBDamUs7TQQCA==}
+  /@types/node/14.18.34:
+    resolution: {integrity: sha512-hcU9AIQVHmPnmjRK+XUUYlILlr9pQrsqSrwov/JK1pnf3GTQowVBhx54FbvM0AU/VXGH4i3+vgXS5EguR7fysA==}
     dev: false
 
   /@types/parse-json/4.0.0:
