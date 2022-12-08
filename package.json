@@ -2,6 +2,14 @@
   "name": "api-typing",
   "version": "0.1.1",
   "description": "Axios based HTTP client with type hint",
+  "keywords": [
+    "api",
+    "typescript",
+    "axios",
+    "http",
+    "type",
+    "hint"
+  ],
   "author": {
     "email": "sharkrain@outlook.com",
     "name": "yinzhenyu",
