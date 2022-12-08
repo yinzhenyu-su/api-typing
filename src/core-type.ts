@@ -5,7 +5,7 @@ import type {
   ExtractRequestBodyJSON,
   Method,
   PathKeyOfMethod,
-} from "./ApiHelper"
+} from "./api-helper"
 
 export type ApiTypingRequestRaw = Omit<AxiosRequestConfig, "params"> & {
   // TODO动态require
@@ -21,11 +21,11 @@ export type ApiTypingRequestRaw = Omit<AxiosRequestConfig, "params"> & {
 
 type DynamicType<M extends Method, T extends PathKeyOfMethod<M>> = {
   query: keyof ExtractParamQuery<M, T> extends never
-  ? undefined
-  : ExtractParamQuery<M, T>
+    ? undefined
+    : ExtractParamQuery<M, T>
   params: keyof ExtractParamPath<M, T> extends never
-  ? undefined
-  : ExtractParamPath<M, T>
+    ? undefined
+    : ExtractParamPath<M, T>
 }
 
 type OmitByType<T, U> = {
@@ -42,8 +42,8 @@ type Last<T extends any[]> = T extends [...infer V, infer L] ? L : never
 
 type HasParamsOrQuery<T, TRUE, FALSE> = "params" extends keyof T
   ? "query" extends keyof T
-  ? TRUE
-  : TRUE
+    ? TRUE
+    : TRUE
   : FALSE
 
 // if no params and query ApiRequestConfig is not required, vice versa.

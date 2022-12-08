@@ -1,3 +1,3 @@
-export * from "./ApiTyping"
+export * from "./api-typing"
 
-export * from "./ApiHelper"
+export * from "./api-helper"

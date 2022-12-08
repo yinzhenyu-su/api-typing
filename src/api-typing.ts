@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios"
 
-import type { Extract200JSON, PathKeyOfMethod } from "./ApiHelper"
-import { requestProxyHandler } from "./ApiTypingProxy"
+import type { Extract200JSON, PathKeyOfMethod } from "./api-helper"
+import { requestProxyHandler } from "./api-typing-proxy"
 import type {
   CreateHTTPClientConfig,
   PostArgs,
@@ -11,7 +11,7 @@ import type {
   DelArgs,
   HeadArgs,
   OptionsArgs,
-} from "./CoreType"
+} from "./core-type"
 
 /**
  * createHTTPClient api-typing instance
