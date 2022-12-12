@@ -36,7 +36,7 @@
   "scripts": {
     "build-fast": "tsup",
     "build": "pnpm run build-fast -- --dts-resolve",
-    "test": "tsc --project ./tsconfig.json --noEmit && vitest run",
+    "test": "vitest run && tsc --project ./tsconfig.json --noEmit",
     "prepublishOnly": "pnpm run build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
