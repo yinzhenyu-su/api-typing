@@ -1,4 +1,4 @@
-import axios, { type AxiosResponse } from "axios"
+import axios, { type AxiosResponse, isAxiosError } from "axios"
 
 import type { Extract200JSON, PathKeyOfMethod } from "./api-helper"
 import { requestProxyHandler } from "./api-typing-proxy"
@@ -12,7 +12,9 @@ import type {
   HeadArgs,
   OptionsArgs,
 } from "./core-type"
+import { GlobalStatus } from "./global-status"
 
+const counterInstance = GlobalStatus.getInstance()
 /**
  * createHTTPClient api-typing instance
  * @param config CreateHTTPClientConfig
@@ -20,6 +22,27 @@ import type {
  */
 export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
   const api = axios.create(config)
+
+  api.interceptors.request.use((config) => {
+    if (config.url) {
+      counterInstance.incrementRequestCount(config.url)
+    }
+    return config
+  })
+  api.interceptors.response.use(
+    (fullfill) => {
+      if (fullfill.config.url) {
+        counterInstance.decrementRequestCount(fullfill.config.url)
+      }
+      return fullfill
+    },
+    (error) => {
+      if (isAxiosError(error) && error.config && error.config.url) {
+        counterInstance.decrementRequestCount(error.config.url)
+      }
+      return error
+    },
+  )
 
   const { CancelToken } = axios
   const cancelToken = CancelToken.source()
@@ -104,7 +127,9 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     options,
     delete: del,
     cancelToken,
+    globalStatus: counterInstance,
   }
+
   return apiTyping
 }
 /**
