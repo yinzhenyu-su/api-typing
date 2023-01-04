@@ -124,7 +124,7 @@ type ExtractMethodRequestBodyContentJSON<
  * 根据http method 和 url 提取requestBody json
  */
 export type ExtractRequestBodyJSON<
-  T extends Exclude<Method, "get" | "head" | "options" | "delete">,
+  T extends Exclude<Method, "get" | "head" | "options">,
   R extends PathKeyOfMethod<T>,
 > = ExtractMethodRequestBodyContentJSON<T, R>
 

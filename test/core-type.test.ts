@@ -26,7 +26,9 @@ async function postPet() {
 }
 
 async function deletePet() {
-  return await createHTTPClient().delete("/pets/{id}", { params: { id: 1 } })
+  return await createHTTPClient().delete("/pets/{id}", undefined as never, {
+    params: { id: 1 },
+  })
 }
 
 type cases = [

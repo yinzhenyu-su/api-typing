@@ -92,12 +92,13 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     })
 
   const del = <T extends PathKeyOfMethod<"delete">>(
-    ...[url, config]: DelArgs<T>
+    ...[url, data, config]: DelArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"delete", T>>> =>
     api.request({
       ...config,
       method: "delete",
       url,
+      data,
     })
 
   const head = <T extends PathKeyOfMethod<"head">>(

@@ -74,8 +74,8 @@ export type PatchArgs<T extends PathKeyOfMethod<"patch">> = HasParamsOrQuery<
 
 export type DelArgs<T extends PathKeyOfMethod<"delete">> = HasParamsOrQuery<
   ApiTypingRequestConfig<"delete", T>,
-  [T, ApiTypingRequestConfig<"delete", T>],
-  [T, ApiTypingRequestConfig<"delete", T>?]
+  [T, ExtractRequestBodyJSON<"delete", T>, ApiTypingRequestConfig<"delete", T>],
+  [T, ExtractRequestBodyJSON<"delete", T>, ApiTypingRequestConfig<"delete", T>?]
 >
 
 export type HeadArgs<T extends PathKeyOfMethod<"head">> = HasParamsOrQuery<
