@@ -30,8 +30,8 @@
   "bin": {
     "get-types": "./bin/cli.mjs"
   },
-  "main": "./outdir/index.cjs",
-  "module": "./outdir/index.js",
+  "main": "./outdir/index.js",
+  "module": "./outdir/index.mjs",
   "types": "./src/index.ts",
   "scripts": {
     "build-fast": "tsup",
