@@ -27,6 +27,23 @@ const declareTemplate = `declare module "api-typing" {
 export {}`
 
 /**
+ * recursive delete key in object
+ * @param obj origin object
+ * @param tobeDelKey tobeDel key
+ * @returns object omitted keys
+ */
+function removeKey(obj: any, tobeDelKey: string): any {
+  for (const key in obj) {
+    if (key.includes(tobeDelKey)) {
+      delete obj[key]
+    } else if (typeof obj[key] === "object") {
+      removeKey(obj[key], tobeDelKey)
+    }
+  }
+  return obj
+}
+
+/**
  * get api definition from url
  * @param param0 @link InitOptions
  * @returns Promise
@@ -35,9 +52,10 @@ export const getDefinition = async ({
   jsonSchemaPath,
   definitionPath = "./api-typing-meta.d.ts",
 }: InitOptions) => {
-  let schemas = await axios.get(jsonSchemaPath).then((res) => res.data)
-  schemas = JSON.parse(decodeURI(JSON.stringify(schemas)))
-  const output = await openapiTs(schemas)
+  const schemas = await axios
+    .get(jsonSchemaPath)
+    .then((res) => removeKey(res.data, "apifox"))
+  const output = await openapiTs(JSON.parse(decodeURI(JSON.stringify(schemas))))
   let success = false
   writeFileSync(
     path.join(path.dirname("."), `${definitionPath}`),

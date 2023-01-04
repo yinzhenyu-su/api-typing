@@ -28,6 +28,7 @@
     }
   },
   "include": [
+    "api-typing-meta.d.ts",
     "src/**/*",
     "util/**/*",
     "test/**/*"
