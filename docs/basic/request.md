@@ -42,14 +42,18 @@ createHTTPClient().put(
 
 ```ts
 // 发送一个 payload 为 { name: "lucky" } 的patch请求, 请求的url为 `/pets/1`
-createHTTPClient().patch("/pets/{petId}", { name: "lucky" }, { params: { petId: 1 } })
+createHTTPClient().patch(
+  "/pets/{petId}",
+  { name: "lucky" },
+  { params: { petId: 1 } },
+)
 ```
 
 ## delete
 
 ```ts
-// 发送一个 delete 请求 url 为 `/pets`
-createHTTPClient().delete("/pets")
+// 发送一个 delete 请求 url 为 `/pets`, payload 为 { id: 1 }
+createHTTPClient().delete("/pets", { id: 1 })
 ```
 
 ## head

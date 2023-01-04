@@ -13,7 +13,7 @@ const instance = createHTTPClient()
 
 instance#get(url[, config])
 
-instance#delete(url[, config])
+instance#delete(url[, data[, config]])
 
 instance#head(url[, config])
 
