@@ -21,9 +21,19 @@
       "ESNext",
     ],
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
       "api-typing": [
         "."
+      ],
+      "@/src/*": [
+        "src/*"
+      ],
+      "@/test/*": [
+        "test/*"
+      ],
+      "@/util/*": [
+        "util/*"
       ]
     }
   },
@@ -33,4 +43,7 @@
     "util/**/*",
     "test/**/*"
   ],
+  "exclude": [
+    "**/node_modules/**"
+  ]
 }
