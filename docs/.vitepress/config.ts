@@ -33,6 +33,33 @@ export default defineConfig({
           { text: "响应参数", link: "/basic/response" },
         ],
       },
+      {
+        text: "高级",
+        items: [
+          {
+            text: "类型提取",
+            items: [
+              {
+                text: "提取请求body类型",
+                link: "/pro/extract-request-body-json",
+              },
+              { text: "提取响应参数类型", link: "/pro/extract-response-json" },
+              {
+                text: "提取请求路径参数类型",
+                link: "pro/extract-request-params-json",
+              },
+              {
+                text: "提取查询字符串类型",
+                link: "/pro/extract-request-query-json",
+              },
+            ],
+          },
+          {
+            text: "使用Axios命名空间",
+            link: "/pro/axios-namespace",
+          },
+        ],
+      },
     ],
     footer: {
       copyright: `Made with love @yinzhenyu-su`,

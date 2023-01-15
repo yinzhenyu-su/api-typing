@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig } from "axios"
+import { AxiosNamespace } from "@/src/lib"
 import type {
   ExtractParamPath,
   ExtractParamQuery,
@@ -7,7 +7,10 @@ import type {
   PathKeyOfMethod,
 } from "./api-helper"
 
-export type ApiTypingRequestRaw = Omit<AxiosRequestConfig, "params"> & {
+export type ApiTypingRequestRaw = Omit<
+  AxiosNamespace.AxiosRequestConfig,
+  "params"
+> & {
   // TODO动态require
   /**
    * 查询参数
@@ -35,7 +38,7 @@ type OmitByType<T, U> = {
 export type ApiTypingRequestConfig<
   M extends Method,
   T extends PathKeyOfMethod<M>,
-> = Omit<AxiosRequestConfig, "params" | "method" | "url"> &
+> = Omit<AxiosNamespace.AxiosRequestConfig, "params" | "method" | "url"> &
   OmitByType<DynamicType<M, T>, undefined>
 
 type Last<T extends any[]> = T extends [...infer V, infer L] ? L : never
@@ -90,13 +93,12 @@ export type OptionsArgs<T extends PathKeyOfMethod<"options">> =
     [T, ApiTypingRequestConfig<"options", T>],
     [T, ApiTypingRequestConfig<"options", T>?]
   >
-// type DynamicTuple<T, U> =
 
 /**
  * 创建api-typing实例的参数
  */
 export type CreateHTTPClientConfig = Pick<
-  AxiosRequestConfig,
+  AxiosNamespace.AxiosRequestConfig,
   | "baseURL"
   | "transformRequest"
   | "transformResponse"
