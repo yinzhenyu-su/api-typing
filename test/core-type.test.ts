@@ -1,5 +1,5 @@
 import type { Equal, IsFalse, IsTrue } from "../util/type-util"
-import type { Extract200JSON } from "../src/index"
+import type { Extract200JSON } from "@/src/index"
 import type {
   components,
   paths,
@@ -7,7 +7,7 @@ import type {
   operations,
 } from "../api-typing-meta.d"
 
-declare module "../src/index" {
+declare module "@/src/index" {
   export interface ApiTypingMeta {
     components: components
     paths: paths
@@ -21,6 +21,7 @@ import { createHTTPClient } from "../src/index"
 async function getPets() {
   return await createHTTPClient().get("/pets")
 }
+
 async function postPet() {
   return await createHTTPClient().post("/pets", { name: "", tag: "" })
 }
