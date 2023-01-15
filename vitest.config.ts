@@ -12,7 +12,6 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["test/index.test.ts"],
     exclude: ["test/core-type.test.ts", "node_modules/**/*"],
   },
 })
