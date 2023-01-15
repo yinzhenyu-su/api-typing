@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,a as l}from"./app.9380381c.js";const C=JSON.parse('{"title":"ApiTypingReuqestConfig","description":"","frontmatter":{},"headers":[],"relativePath":"basic/api-typing-config.md"}'),p={name:"basic/api-typing-config.md"},o=l("",2),e=[o];function t(c,r,F,y,D,i){return a(),n("div",null,e)}const E=s(p,[["render",t]]);export{C as __pageData,E as default};
