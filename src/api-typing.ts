@@ -67,16 +67,13 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
   }
 
   const post = <T extends PathKeyOfMethod<"post">>(
-    ...[
-      url,
-      data = { __data: true } as any,
-      config = { __config: true } as any,
-    ]: PostArgs<T>
+    ...[url, data, config]: PostArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"post", T>>> => {
     let options = {
       method: "post",
       url,
     } as AxiosRequestConfig
+
     // 如果只有两个参数，则需要判断第二个参数是不是 config
     // 如果有三个参数，就直接赋值
     if (!isConfig(config)) {
@@ -84,6 +81,11 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
         options = {
           ...data,
           ...options,
+        }
+      } else {
+        options = {
+          ...options,
+          data,
         }
       }
     } else {
@@ -111,6 +113,11 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
           ...data,
           ...options,
         }
+      } else {
+        options = {
+          ...options,
+          data,
+        }
       }
     } else {
       options = {
@@ -137,6 +144,11 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
           ...data,
           ...options,
         }
+      } else {
+        options = {
+          ...options,
+          data,
+        }
       }
     } else {
       options = {
@@ -162,6 +174,11 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
         options = {
           ...data,
           ...options,
+        }
+      } else {
+        options = {
+          ...options,
+          data,
         }
       }
     } else {
