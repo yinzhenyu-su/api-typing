@@ -28,15 +28,20 @@ export type ApiTypingRequestRaw = Omit<
 // 3. 如果有params，那么ApiRequestConfig必须有params，反之亦然。
 // 4. 如果有query，那么ApiRequestConfig必须有query，反之亦然。
 
-type DynamicKeys<M extends Method, T extends PathKeyOfMethod<M>> = RequiredKeys<
-  ExtractParamQuery<M, T>
-> extends never
-  ? RequiredKeys<ExtractParamPath<M, T>> extends never
+type DynamicKeys<
+  M extends Method,
+  T extends PathKeyOfMethod<M>,
+> = ExtractParamPath<M, T> extends never
+  ? ExtractParamQuery<M, T> extends never
     ? never
     : RequiredKeys<ExtractParamQuery<M, T>> extends never
-    ? { params: ExtractParamPath<M, T> }
-    : { params: ExtractParamPath<M, T>; query: ExtractParamQuery<M, T> }
-  : { query: ExtractParamQuery<M, T> }
+    ? { query?: ExtractParamQuery<M, T> }
+    : { query: ExtractParamQuery<M, T> }
+  : ExtractParamQuery<M, T> extends never
+  ? RequiredKeys<ExtractParamPath<M, T>> extends never
+    ? { params?: ExtractParamPath<M, T> }
+    : { params: ExtractParamPath<M, T> }
+  : { params: ExtractParamPath<M, T>; query: ExtractParamQuery<M, T> }
 
 export type ApiTypingRequestConfig<
   M extends Method,
@@ -192,10 +197,14 @@ export const AxiosRequestConfigKeys = [
   "xsrfHeaderName",
 ] as const
 
+export type Optional<T> = { [k in keyof T]?: T[k] }
+
 /**
  * 创建api-typing实例的参数
  */
-export type CreateHTTPClientConfig = Pick<
-  AxiosNamespace.AxiosRequestConfig,
-  (typeof AxiosRequestConfigKeys)[number]
+export type CreateHTTPClientConfig = Optional<
+  Pick<
+    AxiosNamespace.AxiosRequestConfig,
+    (typeof AxiosRequestConfigKeys)[number]
+  >
 >
