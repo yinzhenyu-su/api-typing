@@ -46,16 +46,6 @@ export type ApiTypingRequestConfig<
   : CreateHTTPClientConfig & DynamicKeys<M, T>
 
 // if no params and query ApiRequestConfig is not required, vice versa.
-/**
- * Get request args
- * @param T request path
- */
-export type GetArgs<T extends PathKeyOfMethod<"get">> = DynamicKeys<
-  "get",
-  T
-> extends never
-  ? [T, ApiTypingRequestConfig<"get", T>]
-  : [T, ApiTypingRequestConfig<"get", T>]
 
 /**
  * Post request args
@@ -68,6 +58,8 @@ export type PostArgs<T extends PathKeyOfMethod<"post">> = DynamicKeys<
   ? ExtractRequestBodyJSON<"post", T> extends never
     ? [T, ApiTypingRequestConfig<"post", T>?]
     : [T, ExtractRequestBodyJSON<"post", T>, ApiTypingRequestConfig<"post", T>?]
+  : ExtractRequestBodyJSON<"post", T> extends never
+  ? [T, ApiTypingRequestConfig<"post", T>]
   : [T, ExtractRequestBodyJSON<"post", T>, ApiTypingRequestConfig<"post", T>]
 
 /**
@@ -81,6 +73,8 @@ export type PutArgs<T extends PathKeyOfMethod<"put">> = DynamicKeys<
   ? ExtractRequestBodyJSON<"put", T> extends never
     ? [T, ApiTypingRequestConfig<"put", T>?]
     : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>?]
+  : ExtractRequestBodyJSON<"put", T> extends never
+  ? [T, ApiTypingRequestConfig<"put", T>]
   : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>]
 
 /**
@@ -98,6 +92,8 @@ export type PatchArgs<T extends PathKeyOfMethod<"patch">> = DynamicKeys<
         ExtractRequestBodyJSON<"patch", T>,
         ApiTypingRequestConfig<"patch", T>?,
       ]
+  : ExtractRequestBodyJSON<"patch", T> extends never
+  ? [T, ApiTypingRequestConfig<"patch", T>]
   : [T, ExtractRequestBodyJSON<"patch", T>, ApiTypingRequestConfig<"patch", T>]
 
 /**
@@ -115,11 +111,24 @@ export type DelArgs<T extends PathKeyOfMethod<"delete">> = DynamicKeys<
         ExtractRequestBodyJSON<"delete", T>,
         ApiTypingRequestConfig<"delete", T>?,
       ]
+  : ExtractRequestBodyJSON<"delete", T> extends never
+  ? [T, ApiTypingRequestConfig<"delete", T>]
   : [
       T,
       ExtractRequestBodyJSON<"delete", T>,
       ApiTypingRequestConfig<"delete", T>,
     ]
+
+/**
+ * Get request args
+ * @param T request path
+ */
+export type GetArgs<T extends PathKeyOfMethod<"get">> = DynamicKeys<
+  "get",
+  T
+> extends never
+  ? [T, ApiTypingRequestConfig<"get", T>?]
+  : [T, ApiTypingRequestConfig<"get", T>]
 
 /**
  * Head request args

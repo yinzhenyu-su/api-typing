@@ -1,5 +1,5 @@
 import type { Equal, IsFalse, IsTrue } from "../util/type-util"
-import type { Extract200JSON } from "@/src/index"
+import type { Extract200JSON, ExtractRequestBodyJSON } from "@/src/index"
 import type {
   components,
   paths,
@@ -27,9 +27,13 @@ async function postPet() {
 }
 
 async function deletePet() {
-  return await createHTTPClient().delete("/pets/{id}", undefined as never, {
+  return await createHTTPClient().delete("/pets/{id}", {
     params: { id: 1 },
   })
+}
+
+async function getPet() {
+  return await createHTTPClient().get("/pets/{id}", { params: { id: 0 } })
 }
 
 type cases = [
@@ -45,4 +49,12 @@ type cases = [
     Awaited<ReturnType<typeof deletePet>>["data"],
     Extract200JSON<"delete", "/pets/{id}">
   >,
-]
+  Equal<
+    Awaited<ReturnType<typeof getPet>>["data"],
+    Extract200JSON<"get", "/pets/{id}">
+  >,
+] extends [true, true, true, true]
+  ? true
+  : false
+
+const test: cases = true

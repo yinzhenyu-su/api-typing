@@ -32,5 +32,6 @@ test("test axios-namespace", () => {
   expect(httpClient).toHaveProperty("patch")
   expect(httpClient).toHaveProperty("delete")
   expect(httpClient).toHaveProperty("get")
+  expect(httpClient).toHaveProperty("head")
   expect(httpClient).toHaveProperty("options")
 })
