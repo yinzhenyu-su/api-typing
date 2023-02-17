@@ -98,7 +98,9 @@ export type ExtractParamQuery<
   R extends PathKeyOfMethod<T>,
 > = ExtractMethodParam<T, R>[Extract<keyof ExtractMethodParam<T, R>, "query">]
 
-// ------------------- JSON Obj
+/**
+ * 根据 url 和 http method 提取request body 传参
+ */
 export type ExtractMethodRequestBody<
   T extends Method,
   R extends PathKeyOfMethod<T>,
@@ -175,3 +177,22 @@ export type Extract200JSON<
   T extends Method,
   R extends PathKeyOfMethod<T>,
 > = ExtractMethodResponse200ContentJSON<T, R>
+
+/**
+ * 提取required字段
+ */
+export type RequiredKeys<T> = {
+  [K in keyof T]-?: {} extends { [P in K]: T[K] } ? never : K
+}[keyof T]
+
+/**
+ * 判断是否有必填字段
+ */
+export type HasRequiredField<T> = RequiredKeys<T> extends never ? false : true
+
+/**
+ * omit by type
+ */
+type OmitByType<T, U> = {
+  [k in keyof T as T[k] extends U ? never : k]: T[k]
+}

@@ -49,6 +49,7 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
   const proxy = new Proxy(api.request, requestProxyHandler)
   api.request = proxy
 
+  // TODO 区分不同的请求方法，获取 data 和 config 对象
   const get = <T extends PathKeyOfMethod<"get">>(
     ...[url, config]: GetArgs<T>
   ) =>
