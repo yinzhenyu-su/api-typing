@@ -41,10 +41,9 @@ type DynamicKeys<M extends Method, T extends PathKeyOfMethod<M>> = RequiredKeys<
 export type ApiTypingRequestConfig<
   M extends Method,
   T extends PathKeyOfMethod<M>,
-> = Omit<AxiosNamespace.AxiosRequestConfig, "params" | "method" | "url"> &
-  DynamicKeys<M, T> extends never
-  ? {}
-  : DynamicKeys<M, T>
+> = DynamicKeys<M, T> extends never
+  ? CreateHTTPClientConfig
+  : CreateHTTPClientConfig & DynamicKeys<M, T>
 
 // if no params and query ApiRequestConfig is not required, vice versa.
 /**
@@ -144,40 +143,50 @@ export type OptionsArgs<T extends PathKeyOfMethod<"options">> = DynamicKeys<
   ? [T, ApiTypingRequestConfig<"options", T>?]
   : [T, ApiTypingRequestConfig<"options", T>]
 
+export const AxiosRequestConfigKeys = [
+  "adapter",
+  "auth",
+  "baseURL",
+  "beforeRedirect",
+  "cancelToken",
+  // "data",
+  "decompress",
+  "env",
+  "formSerializer",
+  "headers",
+  "httpAgent",
+  "httpsAgent",
+  "insecureHTTPParser",
+  "maxBodyLength",
+  "maxContentLength",
+  "maxRate",
+  "maxRedirects",
+  // "method",
+  "onDownloadProgress",
+  "onUploadProgress",
+  // "params",
+  "paramsSerializer",
+  "proxy",
+  "responseEncoding",
+  "responseType",
+  "signal",
+  "socketPath",
+  "timeout",
+  "timeoutErrorMessage",
+  "transformRequest",
+  "transformResponse",
+  "transitional",
+  // "url",
+  "validateStatus",
+  "withCredentials",
+  "xsrfCookieName",
+  "xsrfHeaderName",
+] as const
+
 /**
  * 创建api-typing实例的参数
  */
 export type CreateHTTPClientConfig = Pick<
   AxiosNamespace.AxiosRequestConfig,
-  | "baseURL"
-  | "transformRequest"
-  | "transformResponse"
-  | "headers"
-  | "paramsSerializer"
-  | "timeout"
-  | "timeoutErrorMessage"
-  | "withCredentials"
-  | "adapter"
-  | "auth"
-  | "responseType"
-  | "responseEncoding"
-  | "xsrfCookieName"
-  | "xsrfHeaderName"
-  | "onUploadProgress"
-  | "onDownloadProgress"
-  | "maxContentLength"
-  | "validateStatus"
-  | "maxBodyLength"
-  | "maxRedirects"
-  | "beforeRedirect"
-  | "socketPath"
-  | "httpAgent"
-  | "httpsAgent"
-  | "proxy"
-  | "cancelToken"
-  | "decompress"
-  | "transitional"
-  | "signal"
-  | "insecureHTTPParser"
-  | "env"
+  (typeof AxiosRequestConfigKeys)[number]
 >

@@ -1,8 +1,12 @@
-import axios, { type AxiosResponse, isAxiosError } from "axios"
+import axios, {
+  type AxiosResponse,
+  type AxiosRequestConfig,
+  isAxiosError,
+} from "axios"
 
 import type { Extract200JSON, PathKeyOfMethod } from "./api-helper"
 import { requestProxyHandler } from "./api-typing-proxy"
-import type {
+import {
   CreateHTTPClientConfig,
   PostArgs,
   GetArgs,
@@ -11,6 +15,7 @@ import type {
   DelArgs,
   HeadArgs,
   OptionsArgs,
+  AxiosRequestConfigKeys,
 } from "./core-type"
 import { GlobalStatus } from "./global-status"
 
@@ -50,6 +55,125 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
   api.request = proxy
 
   // TODO 区分不同的请求方法，获取 data 和 config 对象
+  // FIXME 有点 hack，需要优化
+  const isConfig = (obj: any) => {
+    if (obj === null || obj === undefined) return false
+    if (typeof obj !== "object") return false
+    return Object.keys(obj).some((key) =>
+      AxiosRequestConfigKeys.concat(["params", "query"] as any).includes(
+        key as any,
+      ),
+    )
+  }
+
+  const post = <T extends PathKeyOfMethod<"post">>(
+    ...[
+      url,
+      data = { __data: true } as any,
+      config = { __config: true } as any,
+    ]: PostArgs<T>
+  ): Promise<AxiosResponse<Extract200JSON<"post", T>>> => {
+    let options = {
+      method: "post",
+      url,
+    } as AxiosRequestConfig
+    // 如果只有两个参数，则需要判断第二个参数是不是 config
+    // 如果有三个参数，就直接赋值
+    if (!isConfig(config)) {
+      if (isConfig(data)) {
+        options = {
+          ...data,
+          ...options,
+        }
+      }
+    } else {
+      options = {
+        ...config,
+        ...options,
+        data,
+      }
+    }
+    return api.request(options)
+  }
+
+  const put = <T extends PathKeyOfMethod<"put">>(
+    ...[url, data, config]: PutArgs<T>
+  ): Promise<AxiosResponse<Extract200JSON<"put", T>>> => {
+    let options = {
+      method: "put",
+      url,
+    } as AxiosRequestConfig
+    // 如果只有两个参数，则需要判断第二个参数是不是 config
+    // 如果有三个参数，就直接赋值
+    if (!isConfig(config)) {
+      if (isConfig(data)) {
+        options = {
+          ...data,
+          ...options,
+        }
+      }
+    } else {
+      options = {
+        ...config,
+        ...options,
+        data,
+      }
+    }
+    return api.request(options)
+  }
+
+  const patch = <T extends PathKeyOfMethod<"patch">>(
+    ...[url, data, config]: PatchArgs<T>
+  ): Promise<AxiosResponse<Extract200JSON<"patch", T>>> => {
+    let options = {
+      method: "patch",
+      url,
+    } as AxiosRequestConfig
+    // 如果只有两个参数，则需要判断第二个参数是不是 config
+    // 如果有三个参数，就直接赋值
+    if (!isConfig(config)) {
+      if (isConfig(data)) {
+        options = {
+          ...data,
+          ...options,
+        }
+      }
+    } else {
+      options = {
+        ...config,
+        ...options,
+        data,
+      }
+    }
+    return api.request(options)
+  }
+
+  const del = <T extends PathKeyOfMethod<"delete">>(
+    ...[url, data, config]: DelArgs<T>
+  ): Promise<AxiosResponse<Extract200JSON<"delete", T>>> => {
+    let options = {
+      method: "delete",
+      url,
+    } as AxiosRequestConfig
+    // 如果只有两个参数，则需要判断第二个参数是不是 config
+    // 如果有三个参数，就直接赋值
+    if (!isConfig(config)) {
+      if (isConfig(data)) {
+        options = {
+          ...data,
+          ...options,
+        }
+      }
+    } else {
+      options = {
+        ...config,
+        ...options,
+        data,
+      }
+    }
+    return api.request(options)
+  }
+
   const get = <T extends PathKeyOfMethod<"get">>(
     ...[url, config]: GetArgs<T>
   ) =>
@@ -60,46 +184,6 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
       ...config,
       method: "get",
       url,
-    })
-
-  const post = <T extends PathKeyOfMethod<"post">>(
-    ...[url, data, config]: PostArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"post", T>>> =>
-    api.request({
-      ...config,
-      method: "post",
-      url,
-      data,
-    })
-
-  const put = <T extends PathKeyOfMethod<"put">>(
-    ...[url, data, config]: PutArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"put", T>>> =>
-    api.request({
-      ...config,
-      method: "put",
-      url,
-      data,
-    })
-
-  const patch = <T extends PathKeyOfMethod<"patch">>(
-    ...[url, data, config]: PatchArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"patch", T>>> =>
-    api.request({
-      ...config,
-      method: "patch",
-      url,
-      data,
-    })
-
-  const del = <T extends PathKeyOfMethod<"delete">>(
-    ...[url, data, config]: DelArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"delete", T>>> =>
-    api.request({
-      ...config,
-      method: "delete",
-      url,
-      data,
     })
 
   const head = <T extends PathKeyOfMethod<"head">>(
