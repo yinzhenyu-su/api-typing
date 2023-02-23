@@ -45,7 +45,8 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
       if (isAxiosError(error) && error.config && error.config.url) {
         counterInstance.decrementRequestCount(error.config.url)
       }
-      return error
+      // https://github.com/axios/axios/issues/5412
+      return Promise.reject(error)
     },
   )
 
@@ -66,6 +67,7 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     )
   }
 
+  // TODO post config 有问题
   const post = <T extends PathKeyOfMethod<"post">>(
     ...[url, data, config]: PostArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"post", T>>> => {
