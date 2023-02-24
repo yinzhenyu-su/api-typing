@@ -19,7 +19,7 @@ declare module "@/src/index" {
 import { createHTTPClient } from "../src/index"
 
 async function getPets() {
-  return await createHTTPClient().get("/pets")
+  return await createHTTPClient().get("/pets", { query: { tags: [""] } })
 }
 
 async function postPet() {
