@@ -71,7 +71,7 @@ test("test proxy", async () => {
 test("test getDefinition", async () => {
   await getDefinition({
     jsonSchemaPath:
-      "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore-expanded.json",
+      "https://raw.githubusercontent.com/yinzhenyu-su/api-typing/main/assets/pet.json",
   }).finally(() => {
     setTimeout(() => {
       expect(existsSync("../api-typing-meta.d.ts")).toBeTruthy()

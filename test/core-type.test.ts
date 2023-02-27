@@ -1,20 +1,5 @@
-import type { Equal, IsFalse, IsTrue } from "../util/type-util"
-import type { Extract200JSON, ExtractRequestBodyJSON } from "@/src/index"
-import type {
-  components,
-  paths,
-  external,
-  operations,
-} from "../api-typing-meta.d"
-
-declare module "@/src/index" {
-  export interface ApiTypingMeta {
-    components: components
-    paths: paths
-    external: external
-    operations: operations
-  }
-}
+import type { Equal } from "../util/type-util"
+import type { Extract200JSON } from "@/src/index"
 
 import { createHTTPClient } from "../src/index"
 
