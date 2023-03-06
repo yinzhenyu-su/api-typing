@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from "axios"
 import qs from "qs"
+import { MockOptions } from "./core-type"
 
 export type Parsable = Record<string, string | number>
 
@@ -15,7 +16,10 @@ export const requestProxyHandler = {
   apply: function (
     target: any,
     thisArg: any,
-    argumentList: (AxiosRequestConfig & { query: any; params: any })[],
+    argumentList: (AxiosRequestConfig & {
+      query: any
+      params: any
+    } & MockOptions)[],
   ) {
     // replace url with obj attr
     const requestOption = argumentList[0]
@@ -30,11 +34,21 @@ export const requestProxyHandler = {
 
     // transform obj to querystring
     const query = requestOption.query as string | undefined
+
     if (query) {
       requestOption.url = `${requestOption.url}?${qs.stringify(query)}`
     }
+
+    // use mock url if user want to use mock
+    const { mock, mockBaseURL } = requestOption
+    if (mockBaseURL && mock) {
+      requestOption.baseURL = mockBaseURL
+    }
+
     delete requestOption.params
     delete requestOption.query
+    delete requestOption.mock
+    delete requestOption.mockBaseURL
 
     return target(requestOption)
   },

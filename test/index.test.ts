@@ -3,6 +3,7 @@ import { existsSync } from "fs"
 import { getDefinition } from "@/src/api-meta-init"
 import { requestProxyHandler } from "@/src/api-typing-proxy"
 import type { ApiTypingRequestRaw } from "@/src/core-type"
+import { isConfig } from "@/src/api-typing"
 
 test("test proxy", async () => {
   const request = (config: ApiTypingRequestRaw) => {
@@ -66,6 +67,41 @@ test("test proxy", async () => {
       "url": "?page=1",
     }
   `)
+
+  expect(proxy({ url: undefined, params: { resId: 21 }, query: null }))
+    .toMatchInlineSnapshot(`
+    {
+      "url": "",
+    }
+  `)
+
+  expect(
+    proxy({
+      url: undefined,
+      mock: true,
+    }),
+  ).toMatchInlineSnapshot(`
+    {
+      "url": "",
+    }
+  `)
+
+  expect(proxy({ url: "", mock: true, baseURL: "/mock/base" }))
+    .toMatchInlineSnapshot(`
+    {
+      "baseURL": "/mock/base",
+      "url": "",
+    }
+  `)
+})
+
+test("test isConfig", () => {
+  expect(isConfig({})).toBeTruthy()
+  expect(isConfig({ auth: "", __is_config: true })).toBeTruthy()
+  expect(isConfig({ auth: "", __is_config: true, __is_data: true })).toBeFalsy()
+  expect(isConfig({ auth: "", __is_data: true })).toBeFalsy()
+  expect(isConfig({ auth: "" })).toBeTruthy()
+  expect(isConfig({ params: "" })).toBeTruthy()
 })
 
 test("test getDefinition", async () => {

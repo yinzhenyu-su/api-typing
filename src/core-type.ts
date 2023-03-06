@@ -21,7 +21,7 @@ export type ApiTypingRequestRaw = Omit<
    * 路径参数
    */
   params?: any
-}
+} & MockOptions
 
 // 1. 如果没有params和query，那么ApiRequestConfig是不需要的，反之亦然。
 // 2. 如果有params和query，那么ApiRequestConfig是必须的，反之亦然。
@@ -199,6 +199,8 @@ export const AxiosRequestConfigKeys = [
 
 export type Optional<T> = { [k in keyof T]?: T[k] }
 
+export type MockOptions = { mock?: boolean; mockBaseURL?: string }
+
 /**
  * 创建api-typing实例的参数
  */
@@ -206,5 +208,6 @@ export type CreateHTTPClientConfig = Optional<
   Pick<
     AxiosNamespace.AxiosRequestConfig,
     (typeof AxiosRequestConfigKeys)[number]
-  >
+  > &
+    MockOptions
 >
