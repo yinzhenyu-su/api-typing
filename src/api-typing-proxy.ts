@@ -19,6 +19,8 @@ export const requestProxyHandler = {
     argumentList: (AxiosRequestConfig & {
       query: any
       params: any
+      __is_config?: boolean
+      __is_data?: boolean
     } & MockOptions)[],
   ) {
     // replace url with obj attr
@@ -49,6 +51,8 @@ export const requestProxyHandler = {
     delete requestOption.query
     delete requestOption.mock
     delete requestOption.mockBaseURL
+    delete requestOption.__is_config
+    delete requestOption.__is_data
 
     return target(requestOption)
   },

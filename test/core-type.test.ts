@@ -14,6 +14,7 @@ async function postPet() {
 async function deletePet() {
   return await createHTTPClient().delete("/pets/{id}", {
     params: { id: 1 },
+    __is_config: true,
   })
 }
 

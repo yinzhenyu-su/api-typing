@@ -96,12 +96,14 @@ test("test proxy", async () => {
 })
 
 test("test isConfig", () => {
-  expect(isConfig({})).toBeTruthy()
+  require("jsdom-global")()
+  expect(isConfig({})).toBeFalsy()
   expect(isConfig({ auth: "", __is_config: true })).toBeTruthy()
   expect(isConfig({ auth: "", __is_config: true, __is_data: true })).toBeFalsy()
   expect(isConfig({ auth: "", __is_data: true })).toBeFalsy()
-  expect(isConfig({ auth: "" })).toBeTruthy()
-  expect(isConfig({ params: "" })).toBeTruthy()
+  expect(isConfig({ auth: "" })).toBeFalsy()
+  expect(isConfig({ params: "" })).toBeFalsy()
+  expect(isConfig({ params: "", __is_config: true })).toBeTruthy()
 })
 
 test("test getDefinition", async () => {

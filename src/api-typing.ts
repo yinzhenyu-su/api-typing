@@ -15,7 +15,6 @@ import {
   DelArgs,
   HeadArgs,
   OptionsArgs,
-  AxiosRequestConfigKeys,
   MockOptions,
 } from "./core-type"
 import { GlobalStatus } from "./global-status"
@@ -30,19 +29,13 @@ export const isConfig = (obj: any) => {
   // 如果对象的 keys 包含 CreateHTTPClientConfig 的 key 并且不包含 __is_data 则判断为 config 对象
   // 如果是 config 对象，则返回 true
   if (obj === null || obj === undefined) return false
+  // if obj is form data return false
+  if (obj instanceof FormData) return false
+  // if obj is not object return false
   if (typeof obj !== "object") return false
   const keys = Object.keys(obj)
-  if (keys.length === 0) return true
-  return keys.some(
-    (key) =>
-      AxiosRequestConfigKeys.concat([
-        "params",
-        "query",
-        "mock",
-        "mockBaseURL",
-        "__is_config",
-      ] as any).includes(key as any) && !keys.includes("__is_data"),
-  )
+  if (keys.includes("__is_data")) return false
+  return keys.some((key) => ["__is_config"].includes(key as any))
 }
 
 const counterInstance = GlobalStatus.getInstance()

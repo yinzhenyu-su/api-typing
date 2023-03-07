@@ -61,10 +61,10 @@ export type PostArgs<T extends PathKeyOfMethod<"post">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"post", T> extends never
-    ? [T, ApiTypingRequestConfig<"post", T>?]
+    ? [T, (ApiTypingRequestConfig<"post", T> & { __is_config: true })?]
     : [T, ExtractRequestBodyJSON<"post", T>, ApiTypingRequestConfig<"post", T>?]
   : ExtractRequestBodyJSON<"post", T> extends never
-  ? [T, ApiTypingRequestConfig<"post", T>]
+  ? [T, ApiTypingRequestConfig<"post", T> & { __is_config: true }]
   : [T, ExtractRequestBodyJSON<"post", T>, ApiTypingRequestConfig<"post", T>]
 
 /**
@@ -76,10 +76,10 @@ export type PutArgs<T extends PathKeyOfMethod<"put">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"put", T> extends never
-    ? [T, ApiTypingRequestConfig<"put", T>?]
+    ? [T, (ApiTypingRequestConfig<"put", T> & { __is_config: true })?]
     : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>?]
   : ExtractRequestBodyJSON<"put", T> extends never
-  ? [T, ApiTypingRequestConfig<"put", T>]
+  ? [T, ApiTypingRequestConfig<"put", T> & { __is_config: true }]
   : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>]
 
 /**
@@ -91,14 +91,14 @@ export type PatchArgs<T extends PathKeyOfMethod<"patch">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"patch", T> extends never
-    ? [T, ApiTypingRequestConfig<"patch", T>?]
+    ? [T, (ApiTypingRequestConfig<"patch", T> & { __is_config: true })?]
     : [
         T,
         ExtractRequestBodyJSON<"patch", T>,
         ApiTypingRequestConfig<"patch", T>?,
       ]
   : ExtractRequestBodyJSON<"patch", T> extends never
-  ? [T, ApiTypingRequestConfig<"patch", T>]
+  ? [T, ApiTypingRequestConfig<"patch", T> & { __is_config: true }]
   : [T, ExtractRequestBodyJSON<"patch", T>, ApiTypingRequestConfig<"patch", T>]
 
 /**
@@ -110,14 +110,14 @@ export type DelArgs<T extends PathKeyOfMethod<"delete">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"delete", T> extends never
-    ? [T, ApiTypingRequestConfig<"delete", T>?]
+    ? [T, (ApiTypingRequestConfig<"delete", T> & { __is_config: true })?]
     : [
         T,
         ExtractRequestBodyJSON<"delete", T>,
         ApiTypingRequestConfig<"delete", T>?,
       ]
   : ExtractRequestBodyJSON<"delete", T> extends never
-  ? [T, ApiTypingRequestConfig<"delete", T>]
+  ? [T, ApiTypingRequestConfig<"delete", T> & { __is_config: true }]
   : [
       T,
       ExtractRequestBodyJSON<"delete", T>,
