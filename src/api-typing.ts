@@ -84,22 +84,20 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     let options = { method, url } as Record<string, any>
     // 如果只有两个参数，则需要判断第二个参数是不是 config
     // 如果有三个参数，就直接赋值
-    if (["post", "patch", "put", "delete"].includes(method)) {
-      if (!isConfig(config)) {
-        if (isConfig(data)) {
-          options = {
-            ...data,
-            ...options,
-          }
-        } else {
-          options = {
-            ...options,
-            data,
-          }
+    if (data !== undefined && config !== undefined) {
+      options = {
+        ...config,
+        ...options,
+        data,
+      }
+    } else if (data !== undefined) {
+      if (isConfig(data)) {
+        options = {
+          ...data,
+          ...options,
         }
       } else {
         options = {
-          ...config,
           ...options,
           data,
         }
