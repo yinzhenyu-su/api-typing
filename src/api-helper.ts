@@ -114,12 +114,12 @@ export type ExtractMethodRequestBodyContent<
   "content"
 >]
 
-type ExtractMethodRequestBodyContentJSON<
+export type ExtractMethodRequestBodyContentJSONOrForm<
   T extends Method,
   R extends PathKeyOfMethod<T>,
 > = ExtractMethodRequestBodyContent<T, R>[Extract<
   keyof ExtractMethodRequestBodyContent<T, R>,
-  "application/json"
+  "application/json" | "multipart/form-data"
 >]
 
 /**
@@ -128,7 +128,7 @@ type ExtractMethodRequestBodyContentJSON<
 export type ExtractRequestBodyJSON<
   T extends Exclude<Method, "get" | "head" | "options">,
   R extends PathKeyOfMethod<T>,
-> = ExtractMethodRequestBodyContentJSON<T, R>
+> = ExtractMethodRequestBodyContentJSONOrForm<T, R>
 
 type ExtractMethodResponse<
   T extends Method,
