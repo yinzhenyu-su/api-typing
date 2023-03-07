@@ -2,6 +2,7 @@ import path from "path"
 import { writeFileSync } from "fs"
 import axios from "axios"
 import openapiTs from "openapi-typescript"
+import { deepDel } from "@/util/deep"
 
 export interface InitOptions {
   /**
@@ -27,23 +28,6 @@ const declareTemplate = `declare module "api-typing" {
 export {}`
 
 /**
- * recursive delete key in object
- * @param obj origin object
- * @param tobeDelKey tobeDel key
- * @returns object omitted keys
- */
-function removeKey(obj: any, tobeDelKey: string): any {
-  for (const key in obj) {
-    if (key.includes(tobeDelKey)) {
-      delete obj[key]
-    } else if (typeof obj[key] === "object") {
-      removeKey(obj[key], tobeDelKey)
-    }
-  }
-  return obj
-}
-
-/**
  * get api definition from url
  * @param param0 @link InitOptions
  * @returns Promise
@@ -52,9 +36,20 @@ export const getDefinition = async ({
   jsonSchemaPath,
   definitionPath = "./api-typing-meta.d.ts",
 }: InitOptions) => {
+  // remove unnecessary properties for apifox
   const schemas = await axios
     .get(jsonSchemaPath)
-    .then((res) => removeKey(res.data, "apifox"))
+    .then((res) =>
+      deepDel(
+        res.data,
+        "x-apifox-folder",
+        "x-apifox-status",
+        "x-apifox-refs",
+        "x-apifox-orders",
+        "x-apifox-overrides",
+        "x-apifox-ignore-properties",
+      ),
+    )
   const output = await openapiTs(JSON.parse(decodeURI(JSON.stringify(schemas))))
   let success = false
   writeFileSync(

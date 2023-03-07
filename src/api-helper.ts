@@ -98,7 +98,9 @@ export type ExtractParamQuery<
   R extends PathKeyOfMethod<T>,
 > = ExtractMethodParam<T, R>[Extract<keyof ExtractMethodParam<T, R>, "query">]
 
-// ------------------- JSON Obj
+/**
+ * 根据 url 和 http method 提取request body 传参
+ */
 export type ExtractMethodRequestBody<
   T extends Method,
   R extends PathKeyOfMethod<T>,
@@ -112,12 +114,12 @@ export type ExtractMethodRequestBodyContent<
   "content"
 >]
 
-type ExtractMethodRequestBodyContentJSON<
+export type ExtractMethodRequestBodyContentJSONOrForm<
   T extends Method,
   R extends PathKeyOfMethod<T>,
 > = ExtractMethodRequestBodyContent<T, R>[Extract<
   keyof ExtractMethodRequestBodyContent<T, R>,
-  "application/json"
+  "application/json" | "multipart/form-data"
 >]
 
 /**
@@ -126,7 +128,7 @@ type ExtractMethodRequestBodyContentJSON<
 export type ExtractRequestBodyJSON<
   T extends Exclude<Method, "get" | "head" | "options">,
   R extends PathKeyOfMethod<T>,
-> = ExtractMethodRequestBodyContentJSON<T, R>
+> = ExtractMethodRequestBodyContentJSONOrForm<T, R>
 
 type ExtractMethodResponse<
   T extends Method,
@@ -175,3 +177,22 @@ export type Extract200JSON<
   T extends Method,
   R extends PathKeyOfMethod<T>,
 > = ExtractMethodResponse200ContentJSON<T, R>
+
+/**
+ * 提取required字段
+ */
+export type RequiredKeys<T> = {
+  [K in keyof T]-?: {} extends { [P in K]: T[K] } ? never : K
+}[keyof T]
+
+/**
+ * 判断是否有必填字段
+ */
+export type HasRequiredField<T> = RequiredKeys<T> extends never ? false : true
+
+/**
+ * omit by type
+ */
+type OmitByType<T, U> = {
+  [k in keyof T as T[k] extends U ? never : k]: T[k]
+}
