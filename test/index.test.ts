@@ -119,13 +119,13 @@ test("test isConfig", () => {
   expect(isConfig({ params: "", __is_config: true })).toBeTruthy()
 })
 
-// test("test getDefinition", async () => {
-//   await getDefinition({
-//     jsonSchemaPath:
-//       "https://raw.githubusercontent.com/yinzhenyu-su/api-typing/main/assets/pet.json",
-//   }).finally(() => {
-//     setTimeout(() => {
-//       expect(existsSync("../api-typing-meta.d.ts")).toBeTruthy()
-//     }, 1000)
-//   })
-// })
+test("test getDefinition", async () => {
+  await getDefinition({
+    jsonSchemaPath:
+      "https://raw.githubusercontent.com/yinzhenyu-su/api-typing/main/assets/pet.json",
+  }).finally(() => {
+    setTimeout(() => {
+      expect(existsSync("../api-typing-meta.d.ts")).toBeTruthy()
+    }, 1000)
+  })
+})
