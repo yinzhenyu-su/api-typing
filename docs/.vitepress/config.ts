@@ -55,7 +55,11 @@ export default defineConfig({
             ],
           },
           {
-            text: "使用Axios命名空间",
+            text: "切换 mock",
+            link: "/pro/switch-mock",
+          },
+          {
+            text: "使用 Axios 命名空间",
             link: "/pro/axios-namespace",
           },
         ],
