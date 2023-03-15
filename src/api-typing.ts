@@ -102,6 +102,11 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
           data,
         }
       }
+    } else if (config !== undefined) {
+      options = {
+        ...config,
+        ...options,
+      }
     }
 
     const { mock = false, mockBaseURL = "" } = rootConfig
@@ -139,29 +144,18 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     api.request<
       Extract200JSON<"get", T>,
       AxiosResponse<Extract200JSON<"get", T>>
-    >({
-      ...config,
-      method: "get",
-      url,
-    })
+    >(getOptions("get", url, undefined, config))
 
   const head = <T extends PathKeyOfMethod<"head">>(
     ...[url, config]: HeadArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"head", T>>> =>
-    api.request({
-      ...config,
-      method: "head",
-      url,
-    })
+    api.request(getOptions("head", url, undefined, config))
 
   const options = <T extends PathKeyOfMethod<"options">>(
     ...[url, config]: OptionsArgs<T>
   ): Promise<AxiosResponse<Extract200JSON<"options", T>>> =>
-    api.request({
-      ...config,
-      method: "options",
-      url,
-    })
+    api.request(getOptions("options", url, undefined, config))
+
   const apiTyping = {
     ...api,
     get,
