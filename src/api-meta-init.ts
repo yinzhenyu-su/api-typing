@@ -15,7 +15,10 @@ export interface InitOptions {
    */
   definitionPath?: string
 }
-const importTemplate = `import "api-typing"`
+const importTemplate = `/* eslint-disable */
+/* prettier-ignore */
+// @ts-nocheck
+import "api-typing"`
 const declareTemplate = `declare module "api-typing" {
   export interface ApiTypingMeta {
     paths: paths;
@@ -50,7 +53,7 @@ export const getDefinition = async ({
         "x-apifox-ignore-properties",
       ),
     )
-  const output = await openapiTs(JSON.parse(decodeURI(JSON.stringify(schemas))))
+  const output = await openapiTs(schemas)
   let success = false
   writeFileSync(
     path.join(path.dirname("."), `${definitionPath}`),

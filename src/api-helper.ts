@@ -109,10 +109,15 @@ export type ExtractMethodRequestBody<
 export type ExtractMethodRequestBodyContent<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-> = ExtractMethodRequestBody<T, R>[Extract<
-  keyof ExtractMethodRequestBody<T, R>,
+> = ExcludeUndefinedExtractMethodRequestBody<T, R>[Extract<
+  keyof ExcludeUndefinedExtractMethodRequestBody<T, R>,
   "content"
 >]
+
+type ExcludeUndefinedExtractMethodRequestBody<
+  T extends Method,
+  R extends PathKeyOfMethod<T>,
+> = Exclude<ExtractMethodRequestBody<T, R>, undefined>
 
 export type ExtractMethodRequestBodyContentJSONOrForm<
   T extends Method,
