@@ -62,6 +62,10 @@ export default defineConfig({
             text: "使用 Axios 命名空间",
             link: "/pro/axios-namespace",
           },
+          {
+            text: "使用 ApiTypingMeta 自定义类型",
+            link: "/pro/customize-type",
+          },
         ],
       },
     ],
