@@ -55,9 +55,17 @@ export const getDefinition = async ({
     )
   const output = await openapiTs(schemas)
   let success = false
+  const tryDecodeURIComponent = (str: string) => {
+    try {
+      return decodeURIComponent(str)
+    } catch (e) {
+      console.log('decodeURIComponent error: ', e)
+      return str
+    }
+  }
   writeFileSync(
     path.join(path.dirname("."), `${definitionPath}`),
-    `${importTemplate}\n${output}\n${declareTemplate}`,
+    tryDecodeURIComponent(`${importTemplate}\n${output}\n${declareTemplate}`),
     {
       encoding: "utf8",
     },
