@@ -1,7 +1,7 @@
-import type { Equal } from "../util/type-util"
+import type { Equal } from "@/src/util/type-util"
 import type { Extract200JSON } from "@/src/index"
 
-import { createHTTPClient } from "../src/index"
+import { createHTTPClient } from "../index"
 
 async function getPets() {
   return await createHTTPClient().get("/pets", { query: { tags: [""] } })

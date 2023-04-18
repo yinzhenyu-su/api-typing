@@ -2,7 +2,7 @@ import path from "path"
 import { writeFileSync } from "fs"
 import axios from "axios"
 import openapiTs from "openapi-typescript"
-import { deepDel } from "@/util/deep"
+import { deepDel } from "./util/deep"
 
 export interface InitOptions {
   /**

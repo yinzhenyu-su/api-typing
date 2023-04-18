@@ -7,11 +7,11 @@ export default defineConfig({
   resolve: {
     alias: {
       "@/src": path.resolve(__dirname, "./src"),
-      "@/util": path.resolve(__dirname, "./util"),
-      "@/test": path.resolve(__dirname, "./test"),
+      "@/util": path.resolve(__dirname, "./src/util"),
+      "@/test": path.resolve(__dirname, "./src/test"),
     },
   },
   test: {
-    exclude: ["test/core-type.test.ts", "node_modules/**/*"],
+    exclude: ["src/test/core-type.test.ts", "node_modules/**/*"],
   },
 })
