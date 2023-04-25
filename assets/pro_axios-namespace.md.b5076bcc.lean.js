@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as n,O as o}from"./chunks/framework.97fbe135.js";const F=JSON.parse('{"title":"使用 Axios 命名空间","description":"","frontmatter":{},"headers":[],"relativePath":"pro/axios-namespace.md"}'),p={name:"pro/axios-namespace.md"},l=o("",4),e=[l];function t(c,r,i,D,y,A){return n(),a("div",null,e)}const _=s(p,[["render",t]]);export{F as __pageData,_ as default};
