@@ -1,5 +1,5 @@
 import type { AxiosRequestConfig } from "axios"
-import qs from "qs"
+import qs, { type IStringifyOptions } from "qs"
 import { MockOptions } from "./core-type"
 
 export type Parsable = Record<string, string | number>
@@ -12,17 +12,15 @@ export const replacerFactory = (obj?: Parsable) => {
   return replacer
 }
 
+export type ProxyConfig = AxiosRequestConfig & {
+  query?: any
+  params?: any
+  __is_config?: boolean
+  __is_data?: boolean
+} & MockOptions & { stringifyOptions?: IStringifyOptions }
+
 export const requestProxyHandler = {
-  apply: function (
-    target: any,
-    thisArg: any,
-    argumentList: (AxiosRequestConfig & {
-      query: any
-      params: any
-      __is_config?: boolean
-      __is_data?: boolean
-    } & MockOptions)[],
-  ) {
+  apply: function (target: any, thisArg: any, argumentList: ProxyConfig[]) {
     // replace url with obj attr
     const requestOption = argumentList[0]
     if (requestOption.url === undefined || requestOption.url === null) {
@@ -38,7 +36,10 @@ export const requestProxyHandler = {
     const query = requestOption.query as string | undefined
 
     if (query) {
-      requestOption.url = `${requestOption.url}?${qs.stringify(query)}`
+      requestOption.url = `${requestOption.url}?${qs.stringify(
+        query,
+        requestOption.stringifyOptions,
+      )}`
     }
 
     // use mock url if user want to use mock
@@ -53,6 +54,7 @@ export const requestProxyHandler = {
     delete requestOption.mockBaseURL
     delete requestOption.__is_config
     delete requestOption.__is_data
+    delete requestOption.stringifyOptions
 
     return target(requestOption)
   },
