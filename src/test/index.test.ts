@@ -1,17 +1,16 @@
 import { test, it, expect } from "vitest"
 import { existsSync } from "fs"
 import { getDefinition } from "@/src/api-meta-init"
-import { requestProxyHandler } from "@/src/api-typing-proxy"
-import type { ApiTypingRequestRaw } from "@/src/core-type"
+import { ProxyConfig, requestProxyHandler } from "@/src/api-typing-proxy"
 import { isConfig } from "@/src/api-typing"
 
 test("test proxy", async () => {
-  const request = (config: ApiTypingRequestRaw) => {
+  const request = (config: ProxyConfig) => {
     return config
   }
   const proxy = new Proxy(request, requestProxyHandler) as (
-    config: ApiTypingRequestRaw,
-  ) => ApiTypingRequestRaw
+    config: ProxyConfig,
+  ) => ProxyConfig
   const res = proxy({ url: "/some/res/{id}", params: { id: 1 } })
   expect(res).toMatchInlineSnapshot(`
     {
@@ -104,6 +103,17 @@ test("test proxy", async () => {
     {
       "data": {},
       "url": "/caseInstance/v1/pageAfterGroup/1/0",
+    }
+  `)
+
+  expect(
+    proxy({
+      query: { ids: [1, 2, 3] },
+      stringifyOptions: { arrayFormat: "comma", encode: false },
+    }),
+  ).toMatchInlineSnapshot(`
+    {
+      "url": "?ids=1,2,3",
     }
   `)
 })

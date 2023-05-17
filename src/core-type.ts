@@ -7,6 +7,7 @@ import type {
   PathKeyOfMethod,
   RequiredKeys,
 } from "./api-helper"
+import type { IStringifyOptions } from "qs"
 
 export type ApiTypingRequestRaw = Omit<
   AxiosNamespace.AxiosRequestConfig,
@@ -33,14 +34,14 @@ type DynamicKeys<
   T extends PathKeyOfMethod<M>,
 > = ExtractParamPath<M, T> extends never
   ? ExtractParamQuery<M, T> extends never
-  ? never
-  : RequiredKeys<ExtractParamQuery<M, T>> extends never
-  ? { query?: ExtractParamQuery<M, T> }
-  : { query: ExtractParamQuery<M, T> }
+    ? never
+    : RequiredKeys<ExtractParamQuery<M, T>> extends never
+    ? { query?: ExtractParamQuery<M, T> }
+    : { query: ExtractParamQuery<M, T> }
   : ExtractParamQuery<M, T> extends never
   ? RequiredKeys<ExtractParamPath<M, T>> extends never
-  ? { params?: ExtractParamPath<M, T> }
-  : { params: ExtractParamPath<M, T> }
+    ? { params?: ExtractParamPath<M, T> }
+    : { params: ExtractParamPath<M, T> }
   : { params: ExtractParamPath<M, T>; query: ExtractParamQuery<M, T> }
 
 export type ApiTypingRequestConfig<
@@ -61,8 +62,8 @@ export type PostArgs<T extends PathKeyOfMethod<"post">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"post", T> extends never
-  ? [T, (ApiTypingRequestConfig<"post", T> & { __is_config: true })?]
-  : [T, ExtractRequestBodyJSON<"post", T>, ApiTypingRequestConfig<"post", T>?]
+    ? [T, (ApiTypingRequestConfig<"post", T> & { __is_config: true })?]
+    : [T, ExtractRequestBodyJSON<"post", T>, ApiTypingRequestConfig<"post", T>?]
   : ExtractRequestBodyJSON<"post", T> extends never
   ? [T, ApiTypingRequestConfig<"post", T> & { __is_config: true }]
   : [T, ExtractRequestBodyJSON<"post", T>, ApiTypingRequestConfig<"post", T>]
@@ -76,8 +77,8 @@ export type PutArgs<T extends PathKeyOfMethod<"put">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"put", T> extends never
-  ? [T, (ApiTypingRequestConfig<"put", T> & { __is_config: true })?]
-  : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>?]
+    ? [T, (ApiTypingRequestConfig<"put", T> & { __is_config: true })?]
+    : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>?]
   : ExtractRequestBodyJSON<"put", T> extends never
   ? [T, ApiTypingRequestConfig<"put", T> & { __is_config: true }]
   : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>]
@@ -91,12 +92,12 @@ export type PatchArgs<T extends PathKeyOfMethod<"patch">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"patch", T> extends never
-  ? [T, (ApiTypingRequestConfig<"patch", T> & { __is_config: true })?]
-  : [
-    T,
-    ExtractRequestBodyJSON<"patch", T>,
-    ApiTypingRequestConfig<"patch", T>?,
-  ]
+    ? [T, (ApiTypingRequestConfig<"patch", T> & { __is_config: true })?]
+    : [
+        T,
+        ExtractRequestBodyJSON<"patch", T>,
+        ApiTypingRequestConfig<"patch", T>?,
+      ]
   : ExtractRequestBodyJSON<"patch", T> extends never
   ? [T, ApiTypingRequestConfig<"patch", T> & { __is_config: true }]
   : [T, ExtractRequestBodyJSON<"patch", T>, ApiTypingRequestConfig<"patch", T>]
@@ -110,19 +111,19 @@ export type DelArgs<T extends PathKeyOfMethod<"delete">> = DynamicKeys<
   T
 > extends never
   ? ExtractRequestBodyJSON<"delete", T> extends never
-  ? [T, (ApiTypingRequestConfig<"delete", T> & { __is_config: true })?]
-  : [
-    T,
-    ExtractRequestBodyJSON<"delete", T>,
-    ApiTypingRequestConfig<"delete", T>?,
-  ]
+    ? [T, (ApiTypingRequestConfig<"delete", T> & { __is_config: true })?]
+    : [
+        T,
+        ExtractRequestBodyJSON<"delete", T>,
+        ApiTypingRequestConfig<"delete", T>?,
+      ]
   : ExtractRequestBodyJSON<"delete", T> extends never
   ? [T, ApiTypingRequestConfig<"delete", T> & { __is_config: true }]
   : [
-    T,
-    ExtractRequestBodyJSON<"delete", T>,
-    ApiTypingRequestConfig<"delete", T>,
-  ]
+      T,
+      ExtractRequestBodyJSON<"delete", T>,
+      ApiTypingRequestConfig<"delete", T>,
+    ]
 
 /**
  * Get request args
@@ -209,5 +210,5 @@ export type CreateHTTPClientConfig = Optional<
     AxiosNamespace.AxiosRequestConfig,
     (typeof AxiosRequestConfigKeys)[number]
   > &
-  MockOptions
+    MockOptions & { stringifyOptions?: IStringifyOptions }
 >
