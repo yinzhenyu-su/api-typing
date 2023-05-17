@@ -68,6 +68,10 @@ export default defineConfig({
           },
         ],
       },
+      {
+        text: "Q&A",
+        link: "/question/qa",
+      },
     ],
     footer: {
       copyright: `Made with love @yinzhenyu-su`,
