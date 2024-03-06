@@ -138,4 +138,11 @@ test("test getDefinition", async () => {
       expect(existsSync("../api-typing-meta.d.ts")).toBeTruthy()
     }, 1000)
   })
+  await getDefinition({
+    jsonSchemaPath: "./api-typing-meta.json",
+  }).finally(() => {
+    setTimeout(() => {
+      expect(existsSync("../api-typing-meta.d.ts")).toBeTruthy()
+    }, 1000)
+  })
 })
