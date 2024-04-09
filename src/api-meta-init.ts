@@ -16,7 +16,7 @@ export interface InitOptions {
   definitionPath?: string
   /**
    * auto generated openapi json cache path
-   * @default ./api-typing-meta.json
+   * @default ./api-typing-meta.openapi.json
    */
   jsonCachePath?: string
 }
@@ -43,7 +43,7 @@ export {}`
 export const getDefinition = async ({
   jsonSchemaPath,
   definitionPath = "./api-typing-meta.d.ts",
-  jsonCachePath = "./api-typing-meta.json",
+  jsonCachePath = "./api-typing-meta.openapi.json",
 }: InitOptions) => {
   // remove unnecessary properties for apifox
   let schemas = {} as any

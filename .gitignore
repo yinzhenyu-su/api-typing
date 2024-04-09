@@ -6,4 +6,5 @@ outdir
 api-typing.d.ts
 api-typing-meta.d.ts
 api-typing-meta.json
+api-typing-meta.openapi.json
 docs/.vitepress/cache
