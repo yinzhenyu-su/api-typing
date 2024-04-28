@@ -134,19 +134,20 @@ suite("test proxy, isConfig, init", async () => {
 
   test("test getDefinition", async () => {
     await getDefinition({
-      jsonSchemaPath: "./assets/pet.json",
+      jsonSchemaPath:
+        "https://raw.githubusercontent.com/yinzhenyu-su/api-typing/main/assets/pet.json",
     })
     const success = await new Promise<boolean>((resolve) => {
       if (existsSync("./api-typing-meta.d.ts")) resolve(true)
     })
     expect(success).toBeTruthy()
 
-    // await getDefinition({
-    //   jsonSchemaPath: "./api-typing-meta.openapi.json",
-    // })
-    // const success2 = await new Promise((resolve) => {
-    //   if (existsSync("./api-typing-meta.d.ts")) resolve(true)
-    // })
-    // expect(success2).toBeTruthy()
+    await getDefinition({
+      jsonSchemaPath: "./api-typing-meta.openapi.json",
+    })
+    const success2 = await new Promise((resolve) => {
+      if (existsSync("./api-typing-meta.d.ts")) resolve(true)
+    })
+    expect(success2).toBeTruthy()
   })
 })
