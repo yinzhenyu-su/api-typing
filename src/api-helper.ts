@@ -122,10 +122,10 @@ type ExtractMethodResponse<
 > = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "responses">]
 
 // ---------------------- status response start ----------------------
-type StatusOfPathKeyOfMethod<
+export type StatusOfPathKeyOfMethod<
   T extends Method,
   R extends PathKeyOfMethod<T>,
-> = Extract<keyof ExtractMethodResponse<T, R>, number>
+> = Extract<keyof ExtractMethodResponse<T, R>, number | string>
 
 type ExtractMethodResponseStatus<
   T extends Method,
@@ -147,8 +147,20 @@ type ExtractMethodResponseStatusContent<
  */
 export type ExtractMethodResponseStatusContentJSON<
   T extends Method,
-  R extends PathKeyOfMethod<T>,
   S extends StatusOfPathKeyOfMethod<T, R>,
+  R extends PathKeyOfMethod<T>,
+> = ExtractMethodResponseStatusContent<T, R, S>[Extract<
+  keyof ExtractMethodResponseStatusContent<T, R, S>,
+  "application/json"
+>]
+
+/**
+ *
+ */
+export type D<
+  T extends Method,
+  S extends StatusOfPathKeyOfMethod<T, R>,
+  R extends PathKeyOfMethod<T>,
 > = ExtractMethodResponseStatusContent<T, R, S>[Extract<
   keyof ExtractMethodResponseStatusContent<T, R, S>,
   "application/json"
@@ -179,7 +191,7 @@ type ExtractMethodResponse200ContentJSON<
 >]
 
 /**
- * 根据 method 和 url 提取200响应JSON数据
+ * 根据 method 和 url 提取200响应JSON数据类型
  */
 export type Extract200JSON<
   T extends Method,

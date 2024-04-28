@@ -9,15 +9,15 @@ import type {
 import { createHTTPClient } from "../index"
 
 async function getPets() {
-  return await createHTTPClient().get("/pets", { query: { tags: [""] } })
+  return await createHTTPClient().get("/pets/{id}", { params: { id: 0 } })
 }
 
 async function postPet() {
-  return await createHTTPClient().post("/pets", { name: "", tag: "" })
+  return await createHTTPClient().post("/pets", { name: "dog", tag: "pet" })
 }
 
 async function deletePet() {
-  return await createHTTPClient().delete("/pets/{id}", {
+  return await createHTTPClient().delete<"/pets/{id}", 204>("/pets/{id}", {
     params: { id: 1 },
     __is_config: true,
   })
@@ -31,11 +31,11 @@ async function getPet() {
 type cases = [
   Equal<
     Awaited<ReturnType<typeof getPets>>["data"],
-    Extract200JSON<"get", "/pets">
+    Extract200JSON<"get", "/pets/{id}">
   >,
   Equal<
     Awaited<ReturnType<typeof postPet>>["data"],
-    Extract200JSON<"post", "/pets">
+    ExtractMethodResponseStatusContentJSON<"post", 200, "/pets">
   >,
   Equal<
     Awaited<ReturnType<typeof deletePet>>["data"],
@@ -51,19 +51,18 @@ type cases = [
 
 const test: cases = true
 
-const a: ExtractMethodResponseStatusContentJSON<"delete", "/pets/{id}", 204> =
+const a: ExtractMethodResponseStatusContentJSON<"delete", 204, "/pets/{id}"> =
   null as never
 
-const b: ExtractMethodResponseStatusContentJSON<"get", "/pets/{id}", 200> = {
+const b: ExtractMethodResponseStatusContentJSON<"get", 200, "/pets/{id}"> = {
   id: 1,
   name: "dog",
   tag: "pet",
 }
 
-const c: ExtractMethodResponseStatusContentJSON<"post", "/pets", 200> = {
-  id: 1,
-  name: "dog",
-  tag: "pet",
+const c: ExtractMethodResponseStatusContentJSON<"post", 400, "/pets"> = {
+  code: 200,
+  message: "error",
 }
 
 const allPaths: PathKeyOfMethod<"delete"> = "/pets/{id}"

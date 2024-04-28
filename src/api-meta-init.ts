@@ -67,6 +67,7 @@ export const getDefinition = async ({
       JSON.stringify(schemas, null, 2),
       { encoding: "utf8" },
     )
+    console.log(`openapi json saved to ${jsonCachePath}`)
   } else {
     const str = readFileSync(path.join(path.dirname("."), jsonSchemaPath), {
       encoding: "utf8",
