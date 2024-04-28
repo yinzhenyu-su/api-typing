@@ -1,5 +1,10 @@
 import type { Equal } from "@/src/util/type-util"
-import type { Extract200JSON } from "@/src/index"
+import type {
+  Extract200JSON,
+  ExtractMethodResponseStatusContentJSON,
+  PathKeyOfMethod,
+  PathKeyUnion,
+} from "@/src/index"
 
 import { createHTTPClient } from "../index"
 
@@ -22,6 +27,7 @@ async function getPet() {
   return await createHTTPClient().get("/pets/{id}", { params: { id: 0 } })
 }
 
+// ----------------------- type test -----------------------
 type cases = [
   Equal<
     Awaited<ReturnType<typeof getPets>>["data"],
@@ -44,3 +50,24 @@ type cases = [
   : false
 
 const test: cases = true
+
+const a: ExtractMethodResponseStatusContentJSON<"delete", "/pets/{id}", 204> =
+  null as never
+
+const b: ExtractMethodResponseStatusContentJSON<"get", "/pets/{id}", 200> = {
+  id: 1,
+  name: "dog",
+  tag: "pet",
+}
+
+const c: ExtractMethodResponseStatusContentJSON<"post", "/pets", 200> = {
+  id: 1,
+  name: "dog",
+  tag: "pet",
+}
+
+const allPaths: PathKeyOfMethod<"delete"> = "/pets/{id}"
+
+const allPaths2: PathKeyUnion = "/pets/{id}"
+
+// ----------------------- type test end -----------------------
