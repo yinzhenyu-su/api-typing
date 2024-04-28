@@ -3,6 +3,7 @@ node_modules
 dist
 outdir
 *.log
+*.tsbuildinfo
 api-typing.d.ts
 api-typing-meta.d.ts
 api-typing-meta.json
