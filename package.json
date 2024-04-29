@@ -31,7 +31,7 @@
     "get-types": "./bin/cli.mjs"
   },
   "main": "./outdir/index.js",
-  "module": "./outdir/index.mjs",
+  "module": "./outdir/index.js",
   "types": "./src/index.ts",
   "type": "module",
   "scripts": {
