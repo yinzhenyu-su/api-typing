@@ -208,5 +208,14 @@ export type CreateHTTPClientConfig = Optional<
     AxiosNamespace.AxiosRequestConfig,
     (typeof AxiosRequestConfigKeys)[number]
   > &
-    MockOptions & { stringifyOptions?: IStringifyOptions }
+    MockOptions & {
+      /**
+       * qs序列化query参数
+       */
+      stringifyOptions?: IStringifyOptions
+      /**
+       * 是否创建没有类型的校验的HTTPClient
+       */
+      createNoTypeHTTPClient?: boolean
+    }
 >

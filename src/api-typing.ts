@@ -2,6 +2,7 @@ import axios, {
   type AxiosResponse,
   type AxiosRequestConfig,
   isAxiosError,
+  AxiosInstance,
 } from "axios"
 
 import type {
@@ -51,6 +52,11 @@ const counterInstance = GlobalStatus.getInstance()
 export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
   const rootConfig = config || {}
   const api = axios.create(config)
+
+  let originApi = null as null | AxiosInstance
+  if (config?.createNoTypeHTTPClient) {
+    originApi = axios.create(config)
+  }
 
   api.interceptors.request.use((config) => {
     if (config.url) {
@@ -212,15 +218,79 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
 
   const apiTyping = {
     ...api,
+    /**
+     * http get request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.get("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 }})
+     * ```
+     */
     get,
+    /**
+     * http post request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.post("https://some/url/with/{id}", { some: { data: {}}}, { params: { id: 1 }, query: { limit: 10 }, __is_config: true })
+     * ```
+     */
     post,
+    /**
+     * http put request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.put("https://some/url/with/{id}", { some: { data: {}}}, { params: { id: 1 }, query: { limit: 10 }, __is_config: true })
+     * ```
+     */
     put,
+    /**
+     * http patch request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.patch("https://some/url/with/{id}", { some: { data: {}}}, { params: { id: 1 }, query: { limit: 10 }, __is_config: true })
+     * ```
+     */
     patch,
+    /**
+     * http head request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.post("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 } })
+     * ```
+     */
     head,
+    /**
+     * http options request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.options("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 } })
+     * ```
+     */
     options,
+    /**
+     * http delete request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.delete("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 } })
+     * ```
+     */
     delete: del,
+    /**
+     * cancel token
+     * @example
+     * ```ts
+     * cancelToken.cancel("cancel message")
+     * ```
+     */
     cancelToken,
+    /**
+     * global request count status
+     */
     globalStatus: counterInstance,
+    /**
+     * axios instance without type check, use this instance when you don't need type check.
+     * this instance use the same config with the main instance
+     */
+    noTypeHTTPClient: originApi,
   }
 
   return apiTyping
