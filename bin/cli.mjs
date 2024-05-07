@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { getDefinition } from "../outdir/api-meta-init.mjs"
+import { getDefinition } from "../outdir/api-meta-init.js"
 
 const argv = process.argv.slice(2)
 if (!argv.length) {
