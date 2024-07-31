@@ -79,7 +79,8 @@ export const getDefinition = async ({
   let success = false
   const tryDecodeURIComponent = (str: string) => {
     try {
-      return decodeURIComponent(str)
+      // 在某些情况下，openapi.json 中的字符可能会decodeURIComponent失败，这里做一次转换
+      return decodeURIComponent(encodeURIComponent(str))
     } catch (e) {
       console.log("decodeURIComponent error: ", e)
       return str
