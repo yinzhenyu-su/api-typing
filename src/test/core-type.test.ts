@@ -9,7 +9,9 @@ import type {
 import { createHTTPClient } from "../index"
 
 async function getPets() {
-  return await createHTTPClient().get("/pets/{id}", { params: { id: 0 } })
+  return await createHTTPClient().get("/pets/{id}", {
+    params: { id: 0 },
+  })
 }
 
 async function postPet() {

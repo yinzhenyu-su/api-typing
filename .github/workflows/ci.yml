@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install pnpm
-        run: npm i -g pnpm@~8
+        run: npm i -g pnpm@~9
 
       - name: Install deps
         run: pnpm i
@@ -72,7 +72,7 @@ jobs:
             ${{ runner.os }}-${{ matrix.node-version }}-release-${{ env.cache-name }}-
             ${{ runner.os }}-${{ matrix.node-version }}-release-
             ${{ runner.os }}-
-      - run: npm i -g pnpm@~8
+      - run: npm i -g pnpm@~9
       - run: pnpm i
       - run: pnpm run build
       - run: pnpx semantic-release --branches release

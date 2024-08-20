@@ -1,7 +1,7 @@
 import path from "path"
 import { readFileSync, writeFileSync } from "node:fs"
 import axios from "axios"
-import openapiTs from "openapi-typescript"
+import openapiTs, {astToString} from "openapi-typescript"
 import { deepDel } from "./util/deep"
 
 export interface InitOptions {
@@ -88,7 +88,7 @@ export const getDefinition = async ({
   }
   writeFileSync(
     path.join(path.dirname("."), `${definitionPath}`),
-    tryDecodeURIComponent(`${importTemplate}\n${output}\n${declareTemplate}`),
+    tryDecodeURIComponent(`${importTemplate}\n${astToString(output)}\n${declareTemplate}`),
     {
       encoding: "utf8",
     },

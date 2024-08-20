@@ -1,5 +1,5 @@
 interface ApiTyping {
-  paths: {}
+  paths: { [k in string]: any }
   components: {}
   operations: {}
   external: {}
