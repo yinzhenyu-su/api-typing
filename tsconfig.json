@@ -3,7 +3,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "target": "ES2015",
+    "target": "ES2020",
     "module": "ESNext",
     "strict": true,
     "esModuleInterop": true,
@@ -12,7 +12,6 @@
     "noUnusedLocals": false,
     "noImplicitAny": true,
     "allowJs": true,
-    "noEmit": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "outdir",
     "resolveJsonModule": true,
@@ -38,12 +37,14 @@
     }
   },
   "include": [
+    "src/**/*.ts",
+    "src/api-typing.ts",
     "api-typing-meta.d.ts",
-    "src/**/*",
-    "util/**/*",
-    "src/test/**/*"
+    "scripts/init.js",
   ],
   "exclude": [
-    "**/node_modules/**"
+    "**/node_modules/**",
+    "outdir/**",
+    "scripts/**"
   ]
 }

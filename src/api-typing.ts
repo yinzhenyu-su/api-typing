@@ -2,9 +2,14 @@ import axios, {
   type AxiosResponse,
   type AxiosRequestConfig,
   isAxiosError,
+  AxiosInstance,
 } from "axios"
 
-import type { Extract200JSON, PathKeyOfMethod } from "./api-helper"
+import type {
+  ExtractMethodResponseStatusContentJSON,
+  PathKeyOfMethod,
+  StatusOfPathKeyOfMethod,
+} from "./api-helper"
 import { requestProxyHandler } from "./api-typing-proxy"
 import {
   CreateHTTPClientConfig,
@@ -47,6 +52,11 @@ const counterInstance = GlobalStatus.getInstance()
 export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
   const rootConfig = config || {}
   const api = axios.create(config)
+
+  let originApi = null as null | AxiosInstance
+  if (config?.createNoTypeHTTPClient) {
+    originApi = axios.create(config)
+  }
 
   api.interceptors.request.use((config) => {
     if (config.url) {
@@ -114,59 +124,173 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     return mockOptions
   }
 
-  const post = <T extends PathKeyOfMethod<"post">>(
+  const post = <
+    T extends PathKeyOfMethod<"post">,
+    S extends StatusOfPathKeyOfMethod<"post", T> = Extract<
+      StatusOfPathKeyOfMethod<"post", T>,
+      200
+    >,
+  >(
     ...[url, data, config]: PostArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"post", T>>> => {
+  ): Promise<
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"post", S, T>>
+  > => {
     return api.request(getOptions("post", url, data, config))
   }
 
-  const put = <T extends PathKeyOfMethod<"put">>(
+  const put = <
+    T extends PathKeyOfMethod<"put">,
+    S extends StatusOfPathKeyOfMethod<"put", T> = Extract<
+      StatusOfPathKeyOfMethod<"put", T>,
+      200
+    >,
+  >(
     ...[url, data, config]: PutArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"put", T>>> => {
+  ): Promise<
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"put", S, T>>
+  > => {
     return api.request(getOptions("put", url, data, config))
   }
 
-  const patch = <T extends PathKeyOfMethod<"patch">>(
+  const patch = <
+    T extends PathKeyOfMethod<"patch">,
+    S extends StatusOfPathKeyOfMethod<"patch", T> = Extract<
+      StatusOfPathKeyOfMethod<"patch", T>,
+      200
+    >,
+  >(
     ...[url, data, config]: PatchArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"patch", T>>> => {
+  ): Promise<
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"patch", S, T>>
+  > => {
     return api.request(getOptions("patch", url, data, config))
   }
 
-  const del = <T extends PathKeyOfMethod<"delete">>(
+  const del = <
+    T extends PathKeyOfMethod<"delete">,
+    S extends StatusOfPathKeyOfMethod<"delete", T> = Extract<
+      StatusOfPathKeyOfMethod<"delete", T>,
+      200
+    >,
+  >(
     ...[url, data, config]: DelArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"delete", T>>> => {
+  ): Promise<
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"delete", S, T>>
+  > => {
     return api.request(getOptions("delete", url, data, config))
   }
 
-  const get = <T extends PathKeyOfMethod<"get">>(
+  const get = <
+    T extends PathKeyOfMethod<"get">,
+    S extends StatusOfPathKeyOfMethod<"get", T> = Extract<
+      StatusOfPathKeyOfMethod<"get", T>,
+      200
+    >,
+  >(
     ...[url, config]: GetArgs<T>
-  ) =>
-    api.request<
-      Extract200JSON<"get", T>,
-      AxiosResponse<Extract200JSON<"get", T>>
-    >(getOptions("get", url, undefined, config))
+  ): Promise<
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"get", S, T>>
+  > => api.request(getOptions("get", url, undefined, config))
 
-  const head = <T extends PathKeyOfMethod<"head">>(
+  const head = <
+    T extends PathKeyOfMethod<"head">,
+    S extends StatusOfPathKeyOfMethod<"head", T> = Extract<
+      StatusOfPathKeyOfMethod<"head", T>,
+      200
+    >,
+  >(
     ...[url, config]: HeadArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"head", T>>> =>
-    api.request(getOptions("head", url, undefined, config))
+  ): Promise<
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"head", S, T>>
+  > => api.request(getOptions("head", url, undefined, config))
 
-  const options = <T extends PathKeyOfMethod<"options">>(
+  const options = <
+    T extends PathKeyOfMethod<"options">,
+    S extends StatusOfPathKeyOfMethod<"options", T> = Extract<
+      StatusOfPathKeyOfMethod<"options", T>,
+      200
+    >,
+  >(
     ...[url, config]: OptionsArgs<T>
-  ): Promise<AxiosResponse<Extract200JSON<"options", T>>> =>
-    api.request(getOptions("options", url, undefined, config))
+  ): Promise<
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"options", S, T>>
+  > => api.request(getOptions("options", url, undefined, config))
 
   const apiTyping = {
     ...api,
+    /**
+     * http get request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.get("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 }})
+     * ```
+     */
     get,
+    /**
+     * http post request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.post("https://some/url/with/{id}", { some: { data: {}}}, { params: { id: 1 }, query: { limit: 10 }, __is_config: true })
+     * ```
+     */
     post,
+    /**
+     * http put request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.put("https://some/url/with/{id}", { some: { data: {}}}, { params: { id: 1 }, query: { limit: 10 }, __is_config: true })
+     * ```
+     */
     put,
+    /**
+     * http patch request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.patch("https://some/url/with/{id}", { some: { data: {}}}, { params: { id: 1 }, query: { limit: 10 }, __is_config: true })
+     * ```
+     */
     patch,
+    /**
+     * http head request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.post("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 } })
+     * ```
+     */
     head,
+    /**
+     * http options request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.options("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 } })
+     * ```
+     */
     options,
+    /**
+     * http delete request with type check
+     * @example
+     * ```ts
+     * const { data } = await client.delete("https://some/url/with/{id}", { params: { id: 1 }, query: { limit: 10 } })
+     * ```
+     */
     delete: del,
+    /**
+     * cancel token
+     * @example
+     * ```ts
+     * cancelToken.cancel("cancel message")
+     * ```
+     */
     cancelToken,
+    /**
+     * global request count status
+     */
     globalStatus: counterInstance,
+    /**
+     * axios instance without type check, use this instance when you don't need type check.
+     * this instance use the same config with the main instance
+     */
+    noTypeHTTPClient: originApi,
   }
 
   return apiTyping

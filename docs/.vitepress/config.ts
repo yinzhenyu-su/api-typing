@@ -6,7 +6,8 @@ export default defineConfig({
   description: "一个强类型提示的 http 客户端(基于 axios)",
   themeConfig: {
     nav: [
-      // { text: "快速上手", link: "/start/quick-start" },
+      { text: "快速上手", link: "/start/quick-start" },
+      { text: "演练场", link: "/start/play-ground" },
       // {
       //   text: 'Dropdown Menu',
       //   items: [

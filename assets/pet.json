@@ -91,6 +91,16 @@
           }
         },
         "responses": {
+          "400": {
+            "description": "params error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "200": {
             "description": "pet response",
             "content": {

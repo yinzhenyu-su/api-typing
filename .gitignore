@@ -3,6 +3,11 @@ node_modules
 dist
 outdir
 *.log
+*.tsbuildinfo
 api-typing.d.ts
 api-typing-meta.d.ts
+api-typing-meta.json
+api-typing-meta.openapi.json
 docs/.vitepress/cache
+
+.vitepress/cache

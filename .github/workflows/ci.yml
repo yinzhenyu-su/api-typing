@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node-version: [18.x]
+        node-version: [20.x]
 
     runs-on: ${{ matrix.os }}
 
@@ -21,6 +21,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@v3
         with:
@@ -39,7 +41,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install pnpm
-        run: npm i -g pnpm@~7
+        run: npm i -g pnpm@~9
 
       - name: Install deps
         run: pnpm i
@@ -54,9 +56,11 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip-release') && !contains(github.event.head_commit.message, 'skip-ci') && github.event_name != 'pull_request'"
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
       - name: Cache ~/.pnpm-store
         uses: actions/cache@v2
         env:
@@ -68,8 +72,9 @@ jobs:
             ${{ runner.os }}-${{ matrix.node-version }}-release-${{ env.cache-name }}-
             ${{ runner.os }}-${{ matrix.node-version }}-release-
             ${{ runner.os }}-
-      - run: npm i -g pnpm@~7
+      - run: npm i -g pnpm@~9
       - run: pnpm i
+      - run: pnpm run build
       - run: pnpx semantic-release --branches release
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}

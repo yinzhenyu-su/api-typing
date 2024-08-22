@@ -1,7 +1,7 @@
 import path from "path"
-import { writeFileSync } from "fs"
+import { readFileSync, writeFileSync } from "node:fs"
 import axios from "axios"
-import openapiTs from "openapi-typescript"
+import openapiTs, { astToString } from "openapi-typescript"
 import { deepDel } from "./util/deep"
 
 export interface InitOptions {
@@ -14,6 +14,11 @@ export interface InitOptions {
    * @default ./api-typing-meta.d.ts
    */
   definitionPath?: string
+  /**
+   * auto generated openapi json cache path
+   * @default ./api-typing-meta.openapi.json
+   */
+  jsonCachePath?: string
 }
 const importTemplate = `/* eslint-disable */
 /* prettier-ignore */
@@ -38,34 +43,54 @@ export {}`
 export const getDefinition = async ({
   jsonSchemaPath,
   definitionPath = "./api-typing-meta.d.ts",
+  jsonCachePath = "./api-typing-meta.openapi.json",
 }: InitOptions) => {
   // remove unnecessary properties for apifox
-  const schemas = await axios
-    .get(jsonSchemaPath)
-    .then((res) =>
-      deepDel(
-        res.data,
-        "x-apifox-folder",
-        "x-apifox-status",
-        "x-apifox-refs",
-        "x-apifox-orders",
-        "x-apifox-overrides",
-        "x-apifox-ignore-properties",
-      ),
+  let schemas = {} as any
+  if (jsonSchemaPath.startsWith("http")) {
+    schemas = await axios
+      .get(jsonSchemaPath)
+      .then((res) =>
+        deepDel(
+          res.data,
+          "x-apifox-folder",
+          "x-apifox-status",
+          "x-apifox-refs",
+          "x-apifox-orders",
+          "x-apifox-overrides",
+          "x-apifox-ignore-properties",
+        ),
+      )
+    // 保存 openapi json 到本地
+    writeFileSync(
+      path.join(path.dirname("."), jsonCachePath),
+      JSON.stringify(schemas, null, 2),
+      { encoding: "utf8" },
     )
+    console.log(`openapi json saved to ${jsonCachePath}`)
+  } else {
+    const str = readFileSync(path.join(path.dirname("."), jsonSchemaPath), {
+      encoding: "utf8",
+    })
+    schemas = JSON.parse(str)
+  }
+
   const output = await openapiTs(schemas)
   let success = false
   const tryDecodeURIComponent = (str: string) => {
     try {
-      return decodeURIComponent(str)
+      // 在某些情况下，openapi.json 中的字符可能会decodeURIComponent失败，这里做一次转换
+      return decodeURIComponent(encodeURIComponent(str))
     } catch (e) {
-      console.log('decodeURIComponent error: ', e)
+      console.log("decodeURIComponent error: ", e)
       return str
     }
   }
   writeFileSync(
     path.join(path.dirname("."), `${definitionPath}`),
-    tryDecodeURIComponent(`${importTemplate}\n${output}\n${declareTemplate}`),
+    tryDecodeURIComponent(
+      `${importTemplate}\n${astToString(output)}\n${declareTemplate}`,
+    ),
     {
       encoding: "utf8",
     },

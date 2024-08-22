@@ -12,6 +12,9 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: ["src/test/core-type.test.ts", "node_modules/**/*"],
+    exclude: ["node_modules/**/*", "outdir/**/*"],
+    typecheck: {
+      enabled: true,
+    },
   },
 })
