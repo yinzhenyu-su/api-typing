@@ -1,11 +1,11 @@
-import { test, it, expect, suite } from "vitest"
+import { test, it, expect, describe, beforeAll } from "vitest"
 import { existsSync } from "fs"
 import { getDefinition } from "@/src/api-meta-init"
 import { ProxyConfig, requestProxyHandler } from "@/src/api-typing-proxy"
 import { isConfig } from "@/src/api-typing"
 
-suite("test proxy, isConfig, init", async () => {
-  test("test proxy", async () => {
+describe("test proxy, isConfig, init", async () => {
+  it("test proxy", () => {
     const request = (config: ProxyConfig) => {
       return config
     }
@@ -117,10 +117,53 @@ suite("test proxy, isConfig, init", async () => {
         "url": "?ids=1,2,3",
       }
     `)
+
+    expect(proxy({ url: "", data: "" })).toMatchInlineSnapshot(`
+      {
+        "data": "",
+        "url": "",
+      }
+    `)
+
+    expect(
+      proxy({
+        url: "",
+        mock: true,
+        baseURL: "http://localhost:3000/base",
+        mockBaseURL: "http://localhost:3000/mock",
+      }),
+    ).toMatchInlineSnapshot(`
+      {
+        "baseURL": "http://localhost:3000/mock",
+        "url": "",
+      }
+    `)
+
+    expect(
+      proxy({ url: "", mock: true, baseURL: "http://localhost:3000/base" }),
+    ).toMatchInlineSnapshot(`
+      {
+        "baseURL": "http://localhost:3000/base",
+        "url": "",
+      }
+    `)
+
+    expect(
+      proxy({
+        url: "",
+        mock: false,
+        baseURL: "http://localhost:3000/base",
+        mockBaseURL: "http://localhost:3000/mock",
+      }),
+    ).toMatchInlineSnapshot(`
+      {
+        "baseURL": "http://localhost:3000/base",
+        "url": "",
+      }
+    `)
   })
 
-  test("test isConfig", () => {
-    require("jsdom-global")()
+  it("test isConfig", () => {
     expect(isConfig({})).toBeFalsy()
     expect(isConfig({ auth: "", __is_config: true })).toBeTruthy()
     expect(

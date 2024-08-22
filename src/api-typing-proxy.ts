@@ -20,6 +20,7 @@ export type ProxyConfig = AxiosRequestConfig & {
 } & MockOptions & { stringifyOptions?: IStringifyOptions }
 
 export const requestProxyHandler = {
+  // 代理处理器的apply方法，用于处理请求选项并调用目标函数
   apply: function (target: any, thisArg: any, argumentList: ProxyConfig[]) {
     // replace url with obj attr
     const requestOption = argumentList[0]
