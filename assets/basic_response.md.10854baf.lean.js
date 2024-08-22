@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,O as l}from"./chunks/framework.97fbe135.js";const C=JSON.parse('{"title":"响应参数","description":"","frontmatter":{},"headers":[],"relativePath":"basic/response.md"}'),o={name:"basic/response.md"},p=l("",9),e=[p];function t(c,r,y,F,D,i){return a(),n("div",null,e)}const d=s(o,[["render",t]]);export{C as __pageData,d as default};

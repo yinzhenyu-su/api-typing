@@ -1,1 +1,0 @@
-import{_ as s,c as a,o as n,O as o}from"./chunks/framework.97fbe135.js";const A=JSON.parse('{"title":"使用 ApiTypingMeta 自定义类型","description":"","frontmatter":{},"headers":[],"relativePath":"pro/customize-type.md"}'),p={name:"pro/customize-type.md"},l=o("",4),t=[l];function e(c,r,y,D,i,F){return n(),a("div",null,t)}const u=s(p,[["render",e]]);export{A as __pageData,u as default};

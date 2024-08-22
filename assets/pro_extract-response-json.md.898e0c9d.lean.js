@@ -1,1 +1,0 @@
-import{_ as s,c as a,o,O as t}from"./chunks/framework.97fbe135.js";const d=JSON.parse('{"title":"提取接口响应参数类型","description":"","frontmatter":{},"headers":[],"relativePath":"pro/extract-response-json.md"}'),n={name:"pro/extract-response-json.md"},e=t("",4),l=[e];function p(c,r,D,i,y,F){return o(),a("div",null,l)}const _=s(n,[["render",p]]);export{d as __pageData,_ as default};

@@ -1,1 +1,0 @@
-import{_ as s,c as a,o as n,O as o}from"./chunks/framework.97fbe135.js";const i=JSON.parse('{"title":"切换 mock","description":"","frontmatter":{},"headers":[],"relativePath":"pro/switch-mock.md"}'),l={name:"pro/switch-mock.md"},p=o("",4),t=[p];function e(c,r,D,y,F,C){return n(),a("div",null,t)}const h=s(l,[["render",e]]);export{i as __pageData,h as default};
