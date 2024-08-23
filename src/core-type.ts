@@ -1,4 +1,5 @@
 import { AxiosNamespace } from "./lib"
+import type { AxiosRequestConfig } from "axios"
 import type {
   ExtractParamPath,
   ExtractParamQuery,
@@ -48,8 +49,8 @@ export type ApiTypingRequestConfig<
   T extends PathKeyOfMethod<M>,
 > =
   DynamicKeys<M, T> extends never
-    ? CreateHTTPClientConfig
-    : CreateHTTPClientConfig & DynamicKeys<M, T>
+    ? HttpClientRequestConfig
+    : HttpClientRequestConfig & DynamicKeys<M, T>
 
 // if no params and query ApiRequestConfig is not required, vice versa.
 
@@ -156,45 +157,10 @@ export type OptionsArgs<T extends PathKeyOfMethod<"options">> =
     ? [T, ApiTypingRequestConfig<"options", T>?]
     : [T, ApiTypingRequestConfig<"options", T>]
 
-export const AxiosRequestConfigKeys = [
-  "adapter",
-  "auth",
-  "baseURL",
-  "beforeRedirect",
-  "cancelToken",
-  // "data",
-  "decompress",
-  "env",
-  "formSerializer",
-  "headers",
-  "httpAgent",
-  "httpsAgent",
-  "insecureHTTPParser",
-  "maxBodyLength",
-  "maxContentLength",
-  "maxRate",
-  "maxRedirects",
-  // "method",
-  "onDownloadProgress",
-  "onUploadProgress",
-  // "params",
-  "paramsSerializer",
-  "proxy",
-  "responseEncoding",
-  "responseType",
-  "signal",
-  "socketPath",
-  "timeout",
-  "timeoutErrorMessage",
-  "transformRequest",
-  "transformResponse",
-  "transitional",
-  // "url",
-  "validateStatus",
-  "withCredentials",
-  "xsrfCookieName",
-  "xsrfHeaderName",
-] as const
+type OmitAxiosRequestConfig<D = any> = Omit<
+  AxiosRequestConfig<D>,
+  "url" | "params" | "method" | "data"
+>
 
 export type Optional<T> = { [k in keyof T]?: T[k] }
 
@@ -204,10 +170,7 @@ export type MockOptions = { mock?: boolean; mockBaseURL?: string }
  * 创建api-typing实例的参数
  */
 export type CreateHTTPClientConfig = Optional<
-  Pick<
-    AxiosNamespace.AxiosRequestConfig,
-    (typeof AxiosRequestConfigKeys)[number]
-  > &
+  OmitAxiosRequestConfig &
     MockOptions & {
       /**
        * qs序列化query参数
@@ -218,4 +181,8 @@ export type CreateHTTPClientConfig = Optional<
        */
       createNoTypeHTTPClient?: boolean
     }
+>
+
+export type HttpClientRequestConfig = Optional<
+  OmitAxiosRequestConfig & MockOptions
 >

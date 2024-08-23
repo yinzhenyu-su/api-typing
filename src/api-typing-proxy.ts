@@ -5,11 +5,9 @@ import { MockOptions } from "./core-type"
 export type Parsable = Record<string, string | number>
 
 export const replacerFactory = (obj?: Parsable) => {
-  const replacer = (match: string, p1: string, p2: string, p3: string) => {
-    // 如果obj 没有定义则不做替换，返回错误的url
+  return (match: string, p1: string, p2: string, p3: string) => {
     return obj === undefined ? match : `${obj[p2]}`
   }
-  return replacer
 }
 
 export type ProxyConfig = AxiosRequestConfig & {
@@ -20,33 +18,27 @@ export type ProxyConfig = AxiosRequestConfig & {
 } & MockOptions & { stringifyOptions?: IStringifyOptions }
 
 export const requestProxyHandler = {
-  // 代理处理器的apply方法，用于处理请求选项并调用目标函数
   apply: function (target: any, thisArg: any, argumentList: ProxyConfig[]) {
-    // replace url with obj attr
     const requestOption = argumentList[0]
-    if (requestOption.url === undefined || requestOption.url === null) {
+    if (!requestOption.url) {
       requestOption.url = ""
     }
-    const params = requestOption.params as Parsable
+
+    const params = requestOption.params as Parsable | undefined
     if (params) {
       const replacer = replacerFactory(params)
-      requestOption.url = requestOption.url?.replace(/({)(.*?)(})/g, replacer)
+      requestOption.url = requestOption.url.replace(/({)(.*?)(})/g, replacer)
     }
 
-    // transform obj to querystring
-    const query = requestOption.query as string | undefined
-
-    if (query) {
+    if (requestOption.query) {
       requestOption.url = `${requestOption.url}?${qs.stringify(
-        query,
+        requestOption.query,
         requestOption.stringifyOptions,
       )}`
     }
 
-    // use mock url if user want to use mock
-    const { mock, mockBaseURL } = requestOption
-    if (mockBaseURL && mock) {
-      requestOption.baseURL = mockBaseURL
+    if (requestOption.mockBaseURL && requestOption.mock) {
+      requestOption.baseURL = requestOption.mockBaseURL
     }
 
     delete requestOption.params

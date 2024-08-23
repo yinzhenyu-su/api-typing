@@ -1,8 +1,8 @@
 interface ApiTyping {
-  paths: { [k in string]: any }
-  components: {}
-  operations: {}
-  external: {}
+  paths: Record<string, any>
+  components: Record<string, any>
+  operations: Record<string, any>
+  external: Record<string, any>
 }
 
 export declare interface ApiTypingMeta extends ApiTyping {}
@@ -25,6 +25,22 @@ export type PathKeyOfMethod<R extends Method> = {
     ? Key
     : never
 }[keyof Paths]
+
+/**
+ * 定义有效HTTP方法的类型，这些方法基于PathKeyOfMethod泛型函数的返回值来决定是否包含某个方法
+ * @example
+ * ```
+ * type ValidMethods = "get" | "post" | "put" | "delete" | "patch" | "head" | "options"
+ * ```
+ */
+export type ValidMethods =
+  | (PathKeyOfMethod<"get"> extends never ? never : "get")
+  | (PathKeyOfMethod<"post"> extends never ? never : "post")
+  | (PathKeyOfMethod<"put"> extends never ? never : "put")
+  | (PathKeyOfMethod<"delete"> extends never ? never : "delete")
+  | (PathKeyOfMethod<"patch"> extends never ? never : "patch")
+  | (PathKeyOfMethod<"head"> extends never ? never : "head")
+  | (PathKeyOfMethod<"options"> extends never ? never : "options")
 
 export type PathKeyUnion =
   | PathKeyOfMethod<"get">
@@ -52,9 +68,7 @@ type ExtractMethod<
   R extends PathKeyOfMethod<T>,
 > = A<R>[Extract<keyof A<R>, T>]
 
-/**
- *
- */
+// 定义一个类型 ExtractMethodParam，用于从给定的方法类型 T 中提取特定路径键 R 对应的参数类型
 type ExtractMethodParam<
   T extends Method,
   R extends PathKeyOfMethod<T>,
@@ -98,6 +112,9 @@ type ExcludeUndefinedExtractMethodRequestBody<
   R extends PathKeyOfMethod<T>,
 > = Exclude<ExtractMethodRequestBody<T, R>, undefined>
 
+/**
+ * 根据 method 和 url 提取 requestBody JSON 数据类型和 form 数据类型
+ */
 export type ExtractMethodRequestBodyContentJSONOrForm<
   T extends Method,
   R extends PathKeyOfMethod<T>,
@@ -122,6 +139,9 @@ type ExtractMethodResponse<
 > = ExtractMethod<T, R>[Extract<keyof ExtractMethod<T, R>, "responses">]
 
 // ---------------------- status response start ----------------------
+/**
+ * 根据 method 和 url 以及状态码提取响应数据类型
+ */
 export type StatusOfPathKeyOfMethod<
   T extends Method,
   R extends PathKeyOfMethod<T>,
@@ -155,7 +175,7 @@ export type ExtractMethodResponseStatusContentJSON<
 >]
 
 /**
- *
+ * 根据 method 和 url 以及状态码提取响应JSON数据类型
  */
 export type D<
   T extends Method,

@@ -41,7 +41,7 @@ type cases = [
   >,
   Equal<
     Awaited<ReturnType<typeof deletePet>>["data"],
-    Extract200JSON<"delete", "/pets/{id}">
+    ExtractMethodResponseStatusContentJSON<"delete", 204, "/pets/{id}">
   >,
   Equal<
     Awaited<ReturnType<typeof getPet>>["data"],

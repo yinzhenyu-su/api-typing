@@ -91,37 +91,23 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     data: any,
     config: any,
   ): AxiosRequestConfig & MockOptions => {
-    let options = { method, url } as Record<string, any>
-    // 如果只有两个参数，则需要判断第二个参数是不是 config
-    // 如果有三个参数，就直接赋值
-    if (data !== undefined && config !== undefined) {
-      options = {
-        ...config,
-        ...options,
-        data,
-      }
-    } else if (data !== undefined) {
+    let options: Record<string, any> = { method, url }
+
+    // 合并参数
+    if (data !== undefined) {
       if (isConfig(data)) {
-        options = {
-          ...data,
-          ...options,
-        }
+        options = { ...data, ...options }
       } else {
-        options = {
-          ...options,
-          data,
-        }
-      }
-    } else if (config !== undefined) {
-      options = {
-        ...config,
-        ...options,
+        options.data = data
       }
     }
+    if (config !== undefined) {
+      options = { ...config, ...options }
+    }
 
+    // 添加 mock 配置
     const { mock = false, mockBaseURL = "" } = rootConfig
-    const mockOptions = { mock, mockBaseURL, ...options }
-    return mockOptions
+    return { mock, mockBaseURL, ...options }
   }
 
   const post = <

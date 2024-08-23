@@ -11,3 +11,4 @@ api-typing-meta.openapi.json
 docs/.vitepress/cache
 
 .vitepress/cache
+tsconfig.vitest-temp.json
