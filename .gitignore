@@ -12,3 +12,4 @@ docs/.vitepress/cache
 
 .vitepress/cache
 tsconfig.vitest-temp.json
+coverage

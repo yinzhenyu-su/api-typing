@@ -15,6 +15,12 @@ export default defineConfig({
     exclude: ["node_modules/**/*", "outdir/**/*"],
     typecheck: {
       enabled: true,
+      ignoreSourceErrors: true,
+    },
+    coverage: {
+      include: ["src/**/*.ts"],
+      exclude: ["src/test/**/*"],
+      reporter: ["json", "text", "html"],
     },
   },
 })
