@@ -10,7 +10,10 @@ import type {
 } from "./api-helper"
 import type { IStringifyOptions } from "qs"
 
-type ConfigType = { __is_config: true }
+type ConfigType = {
+  __is_config: true
+  stringifyOptions?: IStringifyOptions
+}
 
 export type ApiTypingRequestRaw = Omit<
   AxiosNamespace.AxiosRequestConfig,
