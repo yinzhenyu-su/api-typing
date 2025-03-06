@@ -23,6 +23,7 @@ import {
   MockOptions,
 } from "./core-type"
 import { GlobalStatus } from "./global-status"
+import { IStringifyOptions } from "qs"
 
 /**
  * judge any is config object
@@ -90,7 +91,8 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     url: string,
     data: any,
     config: any,
-  ): AxiosRequestConfig & MockOptions => {
+  ): AxiosRequestConfig &
+    MockOptions & { stringifyOptions?: IStringifyOptions } => {
     let options: Record<string, any> = { method, url }
 
     // 合并参数
@@ -106,8 +108,8 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
     }
 
     // 添加 mock 配置
-    const { mock = false, mockBaseURL = "" } = rootConfig
-    return { mock, mockBaseURL, ...options }
+    const { mock = false, mockBaseURL = "", stringifyOptions = {} } = rootConfig
+    return { mock, mockBaseURL, stringifyOptions, ...options }
   }
 
   const post = <

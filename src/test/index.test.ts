@@ -2,7 +2,8 @@ import { test, it, expect, describe, beforeAll } from "vitest"
 import { existsSync } from "fs"
 import { getDefinition } from "@/src/api-meta-init"
 import { ProxyConfig, requestProxyHandler } from "@/src/api-typing-proxy"
-import { isConfig } from "@/src/api-typing"
+import { createHTTPClient, isConfig } from "@/src/api-typing"
+import { IStringifyOptions } from "qs"
 
 describe("test proxy, isConfig, init", async () => {
   it("test proxy", () => {
@@ -184,7 +185,6 @@ describe("test proxy, isConfig, init", async () => {
       if (existsSync("./api-typing-meta.d.ts")) resolve(true)
     })
     expect(success).toBeTruthy()
-
     await getDefinition({
       jsonSchemaPath: "./api-typing-meta.openapi.json",
     })
@@ -192,5 +192,20 @@ describe("test proxy, isConfig, init", async () => {
       if (existsSync("./api-typing-meta.d.ts")) resolve(true)
     })
     expect(success2).toBeTruthy()
+
+    const client = createHTTPClient({
+      baseURL: "https://httpbin.org/anything",
+      createNoTypeHTTPClient: true,
+      stringifyOptions: { arrayFormat: "comma", encode: false },
+    })
+    const res = await client.get("/pets/{id}", {
+      params: { id: 1 },
+      query: { ids: [1, 2, 3] },
+      __is_config: true,
+    } as any)
+    expect(res.config.url).toMatchInlineSnapshot(`"/pets/1?ids=1,2,3"`)
+    expect(res.data).not.toBeNull()
+
+    expect(client.noTypeHTTPClient).toMatchInlineSnapshot(`[Function]`)
   })
 })
