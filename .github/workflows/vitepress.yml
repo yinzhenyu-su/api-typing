@@ -14,9 +14,9 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
       - name: Install pnpm
-        run: npm i -g pnpm@~7
+        run: npm i -g pnpm@~9
       - name: Install Deps
         run: pnpm install --frozen-lockfile
 
