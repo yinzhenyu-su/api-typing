@@ -32,6 +32,10 @@ export default defineConfig({
           { text: "创建实例", link: "/basic/api-typing-instance" },
           { text: "请求参数", link: "/basic/request" },
           { text: "响应参数", link: "/basic/response" },
+          {
+            text: "使用 stringifyOptions 自定义序列化",
+            link: "/basic/stringify-options",
+          },
         ],
       },
       {

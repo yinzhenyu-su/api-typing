@@ -12,6 +12,20 @@ import type { IStringifyOptions } from "qs"
 
 type ConfigType = {
   __is_config: true
+  /**
+   * qs 序列化选项，用于自定义 query 参数的序列化方式
+   * @example
+   * ```ts
+   * // 将数组序列化为逗号分隔的字符串
+   * stringifyOptions: { arrayFormat: 'comma' } // ids=[1,2,3] => ids=1,2,3
+   *
+   * // 不编码特殊字符
+   * stringifyOptions: { encode: false } // q=hello world => q=hello world
+   *
+   * // 自定义分隔符
+   * stringifyOptions: { delimiter: ';' } // foo=bar&baz=qux => foo=bar;baz=qux
+   * ```
+   */
   stringifyOptions?: IStringifyOptions
 }
 
@@ -176,7 +190,28 @@ export type CreateHTTPClientConfig = Optional<
   OmitAxiosRequestConfig &
     MockOptions & {
       /**
-       * qs序列化query参数
+       * qs 序列化选项，用于自定义 query 参数的序列化方式
+       * @see https://github.com/ljharb/qs#stringifying
+       * @example
+       * ```ts
+       * // 全局配置
+       * const client = createHTTPClient({
+       *   stringifyOptions: {
+       *     arrayFormat: 'comma',     // 数组格式化方式: brackets, repeat, comma
+       *     encode: false,            // 是否编码字符
+       *     delimiter: '&',           // 参数分隔符
+       *     skipNulls: true,         // 跳过 null 值
+       *     sort: (a, b) => a.localeCompare(b), // 自定义排序
+       *     serializeDate: (d) => d.toISOString(), // 自定义日期序列化
+       *   }
+       * })
+       *
+       * // 单次请求配置
+       * client.get('/api', {
+       *   query: { ids: [1, 2, 3] },
+       *   stringifyOptions: { arrayFormat: 'comma' } // ids=1,2,3
+       * })
+       * ```
        */
       stringifyOptions?: IStringifyOptions
       /**
