@@ -2,7 +2,7 @@ import axios, {
   type AxiosResponse,
   type AxiosRequestConfig,
   isAxiosError,
-  AxiosInstance,
+  type AxiosInstance,
 } from "axios"
 
 import type {
@@ -11,7 +11,7 @@ import type {
   StatusOfPathKeyOfMethod,
 } from "./api-helper"
 import { requestProxyHandler } from "./api-typing-proxy"
-import {
+import type {
   CreateHTTPClientConfig,
   PostArgs,
   GetArgs,
@@ -23,7 +23,7 @@ import {
   MockOptions,
 } from "./core-type"
 import { GlobalStatus } from "./global-status"
-import { IStringifyOptions } from "qs"
+import type { IStringifyOptions } from "qs"
 
 /**
  * judge any is config object

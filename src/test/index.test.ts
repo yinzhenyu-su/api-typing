@@ -1,9 +1,8 @@
-import { test, it, expect, describe, beforeAll } from "vitest"
+import { test, it, expect, describe } from "vitest"
 import { existsSync } from "fs"
 import { getDefinition } from "@/src/api-meta-init"
-import { ProxyConfig, requestProxyHandler } from "@/src/api-typing-proxy"
+import { type ProxyConfig, requestProxyHandler } from "@/src/api-typing-proxy"
 import { createHTTPClient, isConfig } from "@/src/api-typing"
-import { IStringifyOptions } from "qs"
 
 describe("test proxy, isConfig, init", async () => {
   it("test proxy", () => {
@@ -176,7 +175,7 @@ describe("test proxy, isConfig, init", async () => {
     expect(isConfig({ params: "", __is_config: true })).toBeTruthy()
   })
 
-  test(
+  it(
     "test getDefinition",
     async () => {
       await getDefinition({

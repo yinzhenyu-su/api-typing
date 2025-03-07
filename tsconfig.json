@@ -15,6 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "outdir",
     "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
     "lib": [
       "DOM",
       "ESNext",

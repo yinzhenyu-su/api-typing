@@ -8,9 +8,6 @@ interface ApiTyping {
 export declare interface ApiTypingMeta extends ApiTyping {}
 
 type paths = ApiTypingMeta["paths"]
-type components = ApiTypingMeta["components"]
-type operations = ApiTypingMeta["operations"]
-type external = ApiTypingMeta["external"]
 
 type Paths<T = paths> = T
 

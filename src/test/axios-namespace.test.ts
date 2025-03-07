@@ -1,4 +1,4 @@
-import { test, expect, it } from "vitest"
+import { test, expect } from "vitest"
 import { AxiosNamespace } from "@/src/index"
 
 test("test axios-namespace", () => {

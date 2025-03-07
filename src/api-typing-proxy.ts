@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from "axios"
 import qs, { type IStringifyOptions } from "qs"
-import { MockOptions } from "./core-type"
+import type { MockOptions } from "./core-type"
 
 export type Parsable = Record<string, string | number>
 
