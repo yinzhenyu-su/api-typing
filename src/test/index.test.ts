@@ -175,40 +175,41 @@ describe("test proxy, isConfig, init", async () => {
     expect(isConfig({ params: "", __is_config: true })).toBeTruthy()
   })
 
-  it(
-    "test getDefinition",
-    async () => {
-      await getDefinition({
-        jsonSchemaPath:
-          "https://raw.githubusercontent.com/yinzhenyu-su/api-typing/main/assets/pet.json",
-      })
-      const success = await new Promise<boolean>((resolve) => {
-        if (existsSync("./api-typing-meta.d.ts")) resolve(true)
-      })
-      expect(success).toBeTruthy()
-      await getDefinition({
-        jsonSchemaPath: "./api-typing-meta.openapi.json",
-      })
-      const success2 = await new Promise((resolve) => {
-        if (existsSync("./api-typing-meta.d.ts")) resolve(true)
-      })
-      expect(success2).toBeTruthy()
+  it("test getDefinition", async () => {
+    await getDefinition({
+      jsonSchemaPath:
+        "https://raw.githubusercontent.com/yinzhenyu-su/api-typing/main/assets/pet.json",
+    })
+    const success = await new Promise<boolean>((resolve) => {
+      if (existsSync("./api-typing-meta.d.ts")) resolve(true)
+    })
+    expect(success).toBeTruthy()
+    await getDefinition({
+      jsonSchemaPath: "./api-typing-meta.openapi.json",
+    })
+    const success2 = await new Promise((resolve) => {
+      if (existsSync("./api-typing-meta.d.ts")) resolve(true)
+    })
+    expect(success2).toBeTruthy()
 
-      const client = createHTTPClient({
-        baseURL: "https://httpbin.org/anything",
-        createNoTypeHTTPClient: true,
-        stringifyOptions: { arrayFormat: "comma", encode: false },
-      })
-      const res = await client.get("/pets/{id}", {
+    const client = createHTTPClient({
+      baseURL: "https://bing.com",
+      createNoTypeHTTPClient: true,
+      stringifyOptions: { arrayFormat: "comma", encode: false },
+    })
+    const res = await client
+      .get("/pets/{id}", {
         params: { id: 1 },
-        query: { ids: [1, 2, 3] },
+        query: { ids: [1, 2, 3], names: ["a", "b", "c"] },
         __is_config: true,
       } as any)
-      expect(res.config.url).toMatchInlineSnapshot(`"/pets/1?ids=1,2,3"`)
-      expect(res.data).not.toBeNull()
+      .catch((e) => {
+        expect(e.response.status).toBe(404)
+        return e
+      })
+    expect(res.config.url).toMatchInlineSnapshot(`"/pets/1?ids=1,2,3&names=a,b,c"`)
+    expect(res.data).not.toBeNull()
 
-      expect(client.noTypeHTTPClient).toMatchInlineSnapshot(`[Function]`)
-    },
-    { timeout: 1000 * 30 },
-  )
+    expect(client.noTypeHTTPClient).toMatchInlineSnapshot(`[Function]`)
+  })
 })

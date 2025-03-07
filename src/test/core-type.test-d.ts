@@ -5,7 +5,7 @@ import type {
 } from "@/src/index"
 
 import { createHTTPClient } from "../index"
-import { it, describe, expectTypeOf } from "vitest"
+import { it, expectTypeOf } from "vitest"
 
 const client = createHTTPClient({ baseURL: "https://httpbin.org/anything" })
 async function getPets() {
@@ -53,9 +53,9 @@ type cases = [
 
 const testType: cases = true
 
-describe("test core types", () => {
+it("test core types", () => {
   it("response type should match", () => {
-    expectTypeOf(testType).toMatchTypeOf(true)
+    expectTypeOf(testType).toExtend<true>()
   })
   it("shoud match 204", () => {
     const data: ExtractMethodResponseStatusContentJSON<
@@ -81,5 +81,3 @@ describe("test core types", () => {
     expectTypeOf(data).toEqualTypeOf(data)
   })
 })
-
-// ----------------------- type test end -----------------------
