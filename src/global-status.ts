@@ -30,6 +30,13 @@ class GlobalStatus {
     this.#urls.value = []
   }
 
+  /**
+   * 获取特定 URL 的请求计数
+   */
+  getRequestCount(url: string): number {
+    return this.#urls.value.filter((u) => u === url).length
+  }
+
   static #instance: GlobalStatus
 
   static getInstance() {

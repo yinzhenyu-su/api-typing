@@ -46,17 +46,47 @@ export const isConfig = (obj: any) => {
 
 const counterInstance = GlobalStatus.getInstance()
 /**
- * createHTTPClient api-typing instance
- * @param config CreateHTTPClientConfig
- * @returns ApiTypingInstance
+ * Creates a type-safe HTTP client with enhanced features based on axios.
+ *
+ * This function returns an extended axios instance with type-checking capabilities
+ * for API endpoints defined in your OpenAPI/Swagger specifications. It adds request
+ * and response interceptors for tracking request counts, handles mock configurations,
+ * and provides strongly-typed methods for all HTTP verbs.
+ *
+ * @param config - Optional configuration for the HTTP client
+ * @returns An enhanced axios instance with type-checked HTTP methods
+ *
+ * @example
+ * ```typescript
+ * // Create a basic client
+ * const api = createHTTPClient();
+ *
+ * // Create a client with custom configuration
+ * const api = createHTTPClient({
+ *   baseURL: 'https://api.example.com',
+ *   timeout: 5000,
+ *   mock: true,
+ *   mockBaseURL: 'https://mock-api.example.com'
+ * });
+ *
+ * // Make type-safe API calls
+ * const response = await api.get('/users/{id}', {
+ *   params: { id: 123 },
+ *   query: { include: 'profile' }
+ * });
+ * ```
  */
-export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
-  const rootConfig = config || {}
-  const api = axios.create(config)
+export const createHTTPClient = <T extends CreateHTTPClientConfig>(
+  config?: T,
+) => {
+  const rootConfig = config || ({} as T)
+  const modifiedAxios =
+    config?.axiosFactory?.(axios.create(config)) || axios.create(config)
+  const api = modifiedAxios
 
   let originApi = null as null | AxiosInstance
   if (config?.createNoTypeHTTPClient) {
-    originApi = axios.create(config)
+    originApi = modifiedAxios
   }
 
   api.interceptors.request.use((config) => {
@@ -206,6 +236,10 @@ export const createHTTPClient = (config?: CreateHTTPClientConfig) => {
 
   const apiTyping = {
     ...api,
+    /**
+     * axios instance
+     */
+    axiosInstance: api,
     /**
      * http get request with type check
      * @example

@@ -218,6 +218,15 @@ export type CreateHTTPClientConfig = Optional<
        * 是否创建没有类型的校验的HTTPClient
        */
       createNoTypeHTTPClient?: boolean
+      /**
+       * AxiosFactory 用于提供一个自定义的axios实例
+       * @description
+       * @param axios axiosInstance
+       * @return axiosInstance
+       */
+      axiosFactory?: (
+        axios: AxiosNamespace.AxiosInstance,
+      ) => AxiosNamespace.AxiosInstance
     }
 >
 

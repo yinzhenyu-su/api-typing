@@ -207,9 +207,25 @@ describe("test proxy, isConfig, init", async () => {
         expect(e.response.status).toBe(404)
         return e
       })
-    expect(res.config.url).toMatchInlineSnapshot(`"/pets/1?ids=1,2,3&names=a,b,c"`)
+    expect(res.config.url).toMatchInlineSnapshot(
+      `"/pets/1?ids=1,2,3&names=a,b,c"`,
+    )
     expect(res.data).not.toBeNull()
 
     expect(client.noTypeHTTPClient).toMatchInlineSnapshot(`[Function]`)
+  })
+
+  it("test axiosFactory", async () => {
+    const client = createHTTPClient({
+      baseURL: "https://example.com",
+      mock: true,
+      mockBaseURL: "https://mock.example.com",
+      axiosFactory: (axios) => {
+        ;(axios as any).__test__ = true
+        return axios
+      },
+    })
+
+    expect((client.axiosInstance as any).__test__).toBe(true)
   })
 })
