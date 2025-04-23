@@ -71,6 +71,10 @@ export default defineConfig({
             text: "使用 ApiTypingMeta 自定义类型",
             link: "/pro/customize-type",
           },
+          {
+            text: "使用 AxiosFactory 自定义实例",
+            link: "/pro/axios-factory",
+          },
         ],
       },
       {
