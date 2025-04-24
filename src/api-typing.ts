@@ -44,6 +44,41 @@ export const isConfig = (obj: any) => {
   return keys.some((key) => ["__is_config"].includes(key as any))
 }
 
+/**
+ * 创建一个生成请求选项的辅助函数，用于内部使用和测试
+ * @param method HTTP方法
+ * @param url 请求URL
+ * @param data 请求数据
+ * @param config 请求配置
+ * @returns 完整的请求选项
+ */
+export const _createRequestOptions = (
+  method: string,
+  url: string,
+  data: any,
+  config: any,
+  rootConfig: any = {},
+): AxiosRequestConfig &
+  MockOptions & { stringifyOptions?: IStringifyOptions } => {
+  let options: Record<string, any> = { method, url }
+
+  // 合并参数
+  if (data !== undefined) {
+    if (isConfig(data)) {
+      options = { ...data, ...options }
+    } else {
+      options.data = data
+    }
+  }
+  if (config !== undefined) {
+    options = { ...config, ...options }
+  }
+
+  // 添加 mock 配置
+  const { mock = false, mockBaseURL = "", stringifyOptions = {} } = rootConfig
+  return { mock, mockBaseURL, stringifyOptions, ...options }
+}
+
 const counterInstance = GlobalStatus.getInstance()
 /**
  * Creates a type-safe HTTP client with enhanced features based on axios.
@@ -123,23 +158,7 @@ export const createHTTPClient = <T extends CreateHTTPClientConfig>(
     config: any,
   ): AxiosRequestConfig &
     MockOptions & { stringifyOptions?: IStringifyOptions } => {
-    let options: Record<string, any> = { method, url }
-
-    // 合并参数
-    if (data !== undefined) {
-      if (isConfig(data)) {
-        options = { ...data, ...options }
-      } else {
-        options.data = data
-      }
-    }
-    if (config !== undefined) {
-      options = { ...config, ...options }
-    }
-
-    // 添加 mock 配置
-    const { mock = false, mockBaseURL = "", stringifyOptions = {} } = rootConfig
-    return { mock, mockBaseURL, stringifyOptions, ...options }
+    return _createRequestOptions(method, url, data, config, rootConfig)
   }
 
   const post = <
@@ -208,7 +227,9 @@ export const createHTTPClient = <T extends CreateHTTPClientConfig>(
     ...[url, config]: GetArgs<T>
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"get", S, T>>
-  > => api.request(getOptions("get", url, undefined, config))
+  > => {
+    return api.request(getOptions("get", url, undefined, config))
+  }
 
   const head = <
     T extends PathKeyOfMethod<"head">,

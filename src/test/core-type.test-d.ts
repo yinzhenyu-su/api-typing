@@ -5,7 +5,14 @@ import type {
 } from "@/src/index"
 
 import { createHTTPClient } from "../index"
-import { it, expectTypeOf } from "vitest"
+import { it, expectTypeOf, describe } from "vitest"
+import type {
+  GetArgs,
+  PostArgs,
+  PutArgs,
+  PatchArgs,
+  DelArgs,
+} from "../core-type"
 
 const client = createHTTPClient({ baseURL: "https://httpbin.org/anything" })
 async function getPets() {
@@ -53,7 +60,7 @@ type cases = [
 
 const testType: cases = true
 
-it("test core types", () => {
+describe("test core types", () => {
   it("response type should match", () => {
     expectTypeOf(testType).toExtend<true>()
   })
@@ -79,5 +86,114 @@ it("test core types", () => {
       message: "",
     }
     expectTypeOf(data).toEqualTypeOf(data)
+  })
+})
+
+describe("api-typing-meta 路径参数测试", () => {
+  // 测试宠物API的GET请求参数
+  it("应该支持 GET 请求的参数类型", () => {
+    // GET /pets
+    const args = ["/pets"] as GetArgs<"/pets">
+
+    expectTypeOf(args).toExtend<GetArgs<"/pets">>()
+
+    // GET /pets/{id}
+    type PetByIdPathGet = "/pets/{id}"
+    const argsWithPathParam: GetArgs<PetByIdPathGet> = [
+      "/pets/{id}",
+      {
+        params: {
+          id: 123,
+        },
+      },
+    ]
+    expectTypeOf(argsWithPathParam).toExtend<GetArgs<PetByIdPathGet>>()
+  })
+
+  // 测试宠物API的POST请求参数
+  it("应该支持 POST 请求的参数类型", () => {
+    // POST /pets
+    type PetsPathPost = "/pets"
+    const newPet = {
+      name: "Fluffy",
+      tag: "cat",
+    }
+
+    const args: PostArgs<PetsPathPost> = ["/pets", newPet]
+    expectTypeOf(args).toExtend<PostArgs<PetsPathPost>>()
+  })
+
+  // 测试宠物API的PUT请求参数
+  it("应该支持 PUT 请求的参数类型", () => {
+    // PUT /pets/{id}
+    type PetUpdatePath = "/pets/{id}"
+    const updatedPet = {
+      name: "NewName",
+      tag: "updated",
+    }
+
+    const args: PutArgs<PetUpdatePath> = [
+      "/pets/{id}",
+      updatedPet,
+      {
+        params: {
+          id: 456,
+        },
+      },
+    ]
+
+    expectTypeOf(args).toExtend<PutArgs<PetUpdatePath>>()
+  })
+
+  // 测试宠物API的PATCH请求参数
+  it("应该支持 PATCH 请求的参数类型", () => {
+    // PATCH /pets/{id}
+    type PetPatchPath = "/pets/{id}"
+    const patchData = {
+      name: "PatchedName",
+    }
+
+    const args: PatchArgs<PetPatchPath> = [
+      "/pets/{id}",
+      patchData,
+      {
+        params: {
+          id: 789,
+        },
+      },
+    ]
+
+    expectTypeOf(args).toExtend<PatchArgs<PetPatchPath>>()
+  })
+
+  // 测试宠物API的DELETE请求参数
+  it("应该支持 DELETE 请求的参数类型", () => {
+    // 通过路径参数删除
+    type PetDeletePath = "/pets/{id}"
+    const deleteByPathArgs: DelArgs<PetDeletePath> = [
+      "/pets/{id}",
+      {
+        params: {
+          id: 999,
+        },
+        __is_config: true,
+      },
+    ]
+
+    expectTypeOf(deleteByPathArgs).toExtend<DelArgs<PetDeletePath>>()
+
+    // 通过查询参数删除
+    type PetDeleteByQueryPath = "/pets"
+    const deleteByQueryArgs: DelArgs<PetDeleteByQueryPath> = [
+      "/pets",
+      {
+        query: {
+          id: 888,
+        },
+        __is_config: true,
+      },
+    ]
+
+    expectTypeOf(deleteByQueryArgs).toExtend<DelArgs<PetDeleteByQueryPath>>()
   })
 })

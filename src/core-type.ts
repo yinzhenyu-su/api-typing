@@ -53,11 +53,11 @@ type DynamicKeys<M extends Method, T extends PathKeyOfMethod<M>> =
     ? ExtractParamQuery<M, T> extends never | undefined
       ? never | undefined
       : RequiredKeys<ExtractParamQuery<M, T>> extends never | undefined
-        ? { query?: ExtractParamQuery<M, T> }
+        ? { query?: ExtractParamQuery<M, T> } | undefined
         : { query: ExtractParamQuery<M, T> }
     : ExtractParamQuery<M, T> extends never | undefined
       ? RequiredKeys<ExtractParamPath<M, T>> extends never | undefined
-        ? { params?: ExtractParamPath<M, T> }
+        ? { params?: ExtractParamPath<M, T> } | undefined
         : { params: ExtractParamPath<M, T> }
       : { params: ExtractParamPath<M, T>; query: ExtractParamQuery<M, T> }
 
@@ -65,7 +65,7 @@ export type ApiTypingRequestConfig<
   M extends Method,
   T extends PathKeyOfMethod<M>,
 > =
-  DynamicKeys<M, T> extends never
+  RequiredKeys<DynamicKeys<M, T>> extends never
     ? HttpClientRequestConfig
     : HttpClientRequestConfig & DynamicKeys<M, T>
 
@@ -76,7 +76,7 @@ export type ApiTypingRequestConfig<
  * @param T request path
  */
 export type PostArgs<T extends PathKeyOfMethod<"post">> =
-  DynamicKeys<"post", T> extends never | undefined
+  RequiredKeys<DynamicKeys<"post", T>> extends never
     ? ExtractRequestBodyJSON<"post", T> extends never | undefined
       ? [T, (ApiTypingRequestConfig<"post", T> & ConfigType)?]
       : [
@@ -97,7 +97,7 @@ export type PostArgs<T extends PathKeyOfMethod<"post">> =
  * @param T request path
  */
 export type PutArgs<T extends PathKeyOfMethod<"put">> =
-  DynamicKeys<"put", T> extends never | undefined
+  RequiredKeys<DynamicKeys<"put", T>> extends never
     ? ExtractRequestBodyJSON<"put", T> extends never | undefined
       ? [T, (ApiTypingRequestConfig<"put", T> & ConfigType)?]
       : [T, ExtractRequestBodyJSON<"put", T>, ApiTypingRequestConfig<"put", T>?]
@@ -110,7 +110,7 @@ export type PutArgs<T extends PathKeyOfMethod<"put">> =
  * @param T request path
  */
 export type PatchArgs<T extends PathKeyOfMethod<"patch">> =
-  DynamicKeys<"patch", T> extends never | undefined
+  RequiredKeys<DynamicKeys<"patch", T>> extends never
     ? ExtractRequestBodyJSON<"patch", T> extends never | undefined
       ? [T, (ApiTypingRequestConfig<"patch", T> & ConfigType)?]
       : [
@@ -131,7 +131,7 @@ export type PatchArgs<T extends PathKeyOfMethod<"patch">> =
  * @param T request path
  */
 export type DelArgs<T extends PathKeyOfMethod<"delete">> =
-  DynamicKeys<"delete", T> extends never | undefined
+  RequiredKeys<DynamicKeys<"delete", T>> extends never
     ? ExtractRequestBodyJSON<"delete", T> extends never | undefined
       ? [T, (ApiTypingRequestConfig<"delete", T> & ConfigType)?]
       : [
@@ -152,7 +152,7 @@ export type DelArgs<T extends PathKeyOfMethod<"delete">> =
  * @param T request path
  */
 export type GetArgs<T extends PathKeyOfMethod<"get">> =
-  DynamicKeys<"get", T> extends never | undefined
+  RequiredKeys<DynamicKeys<"get", T>> extends never
     ? [T, ApiTypingRequestConfig<"get", T>?]
     : [T, ApiTypingRequestConfig<"get", T>]
 
@@ -161,8 +161,8 @@ export type GetArgs<T extends PathKeyOfMethod<"get">> =
  * @param T request path
  */
 export type HeadArgs<T extends PathKeyOfMethod<"head">> =
-  DynamicKeys<"head", T> extends never | undefined
-    ? [T, ApiTypingRequestConfig<"options", T>?]
+  RequiredKeys<DynamicKeys<"head", T>> extends never
+    ? [T, ApiTypingRequestConfig<"head", T>?]
     : [T, ApiTypingRequestConfig<"head", T>]
 
 /**
@@ -170,7 +170,7 @@ export type HeadArgs<T extends PathKeyOfMethod<"head">> =
  * @param T request path
  */
 export type OptionsArgs<T extends PathKeyOfMethod<"options">> =
-  DynamicKeys<"options", T> extends never | undefined
+  RequiredKeys<DynamicKeys<"options", T>> extends never
     ? [T, ApiTypingRequestConfig<"options", T>?]
     : [T, ApiTypingRequestConfig<"options", T>]
 

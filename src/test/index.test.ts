@@ -177,15 +177,14 @@ describe("test proxy, isConfig, init", async () => {
 
   it("test getDefinition", async () => {
     await getDefinition({
-      jsonSchemaPath:
-        "https://raw.githubusercontent.com/yinzhenyu-su/api-typing/main/assets/pet.json",
+      jsonSchemaPath: "./assets/pet.json",
     })
     const success = await new Promise<boolean>((resolve) => {
       if (existsSync("./api-typing-meta.d.ts")) resolve(true)
     })
     expect(success).toBeTruthy()
     await getDefinition({
-      jsonSchemaPath: "./api-typing-meta.openapi.json",
+      jsonSchemaPath: "./assets/pet.json",
     })
     const success2 = await new Promise((resolve) => {
       if (existsSync("./api-typing-meta.d.ts")) resolve(true)
