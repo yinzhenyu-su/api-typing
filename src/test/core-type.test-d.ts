@@ -90,13 +90,36 @@ describe("test core types", () => {
 })
 
 describe("api-typing-meta 路径参数测试", () => {
+  it("应该支持各种请求方法的 params 和 query 参数", () => {
+    const argsGet: GetArgs<"/pets/paramsOrQuery/{testParam}"> = [
+      "/pets/paramsOrQuery/{testParam}",
+      { query: {}, params: { testParam: "" } },
+    ]
+    const argsPost: PostArgs<"/pets/paramsOrQuery/{testParam}"> = [
+      "/pets/paramsOrQuery/{testParam}",
+      { query: {}, params: { testParam: "" }, __is_config: true },
+    ]
+
+    const argsPut: PutArgs<"/pets/paramsOrQuery/{testParam}"> = [
+      "/pets/paramsOrQuery/{testParam}",
+      { query: {}, params: { testParam: "" }, __is_config: true },
+    ]
+    const argsPatch: PatchArgs<"/pets/paramsOrQuery/{testParam}"> = [
+      "/pets/paramsOrQuery/{testParam}",
+      { query: {}, params: { testParam: "" }, __is_config: true },
+    ]
+
+    expectTypeOf(argsGet).toExtend<GetArgs<"/pets/paramsOrQuery/{testParam}">>()
+    expectTypeOf(argsPost).toExtend<
+      PostArgs<"/pets/paramsOrQuery/{testParam}">
+    >()
+    expectTypeOf(argsPut).toExtend<PutArgs<"/pets/paramsOrQuery/{testParam}">>()
+    expectTypeOf(argsPatch).toExtend<
+      PatchArgs<"/pets/paramsOrQuery/{testParam}">
+    >()
+  })
   // 测试宠物API的GET请求参数
   it("应该支持 GET 请求的参数类型", () => {
-    // GET /pets
-    const args = ["/pets"] as GetArgs<"/pets">
-
-    expectTypeOf(args).toExtend<GetArgs<"/pets">>()
-
     // GET /pets/{id}
     type PetByIdPathGet = "/pets/{id}"
     const argsWithPathParam: GetArgs<PetByIdPathGet> = [

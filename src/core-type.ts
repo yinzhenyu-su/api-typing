@@ -65,7 +65,7 @@ export type ApiTypingRequestConfig<
   M extends Method,
   T extends PathKeyOfMethod<M>,
 > =
-  RequiredKeys<DynamicKeys<M, T>> extends never
+  DynamicKeys<M, T> extends never | undefined
     ? HttpClientRequestConfig
     : HttpClientRequestConfig & DynamicKeys<M, T>
 
@@ -155,6 +155,8 @@ export type GetArgs<T extends PathKeyOfMethod<"get">> =
   RequiredKeys<DynamicKeys<"get", T>> extends never
     ? [T, ApiTypingRequestConfig<"get", T>?]
     : [T, ApiTypingRequestConfig<"get", T>]
+
+let b: ApiTypingRequestConfig<"get", "/pets"> = {}
 
 /**
  * Head request args
