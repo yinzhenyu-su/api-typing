@@ -156,8 +156,6 @@ export type GetArgs<T extends PathKeyOfMethod<"get">> =
     ? [T, ApiTypingRequestConfig<"get", T>?]
     : [T, ApiTypingRequestConfig<"get", T>]
 
-let b: ApiTypingRequestConfig<"get", "/pets"> = {}
-
 /**
  * Head request args
  * @param T request path
