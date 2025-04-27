@@ -6,7 +6,7 @@
 
 ---
 
-[English](./README.md) | 简体中文
+[English](./README.md) | 简体中文 | [DeepWiki](https://deepwiki.com/yinzhenyu-su/api-typing)
 
 ## 一个强类型提示的 http 客户端(基于 axios)。
 

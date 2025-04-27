@@ -6,7 +6,7 @@
 
 ---
 
-English | [简体中文](./README.zh-Hans.md)
+English | [简体中文](./README.zh-Hans.md) | [DeepWiki](https://deepwiki.com/yinzhenyu-su/api-typing)
 
 ## A strong type-hint http client framwork(based on axios).
 
