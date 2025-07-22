@@ -11,7 +11,7 @@ class GlobalStatus {
   /**
    * 是否正在请求
    */
-  public inReuqest = computed(() => {
+  public inRequest = computed(() => {
     return this.requestCount.value > 0
   })
 
