@@ -9,6 +9,8 @@ import type {
   ExtractMethodResponseStatusContentJSON,
   PathKeyOfMethod,
   StatusOfPathKeyOfMethod,
+  ApiTypingMeta,
+  ApiTyping,
 } from "./api-helper"
 import { requestProxyHandler } from "./api-typing-proxy"
 import type {
@@ -109,10 +111,30 @@ const counterInstance = GlobalStatus.getInstance()
  *   params: { id: 123 },
  *   query: { include: 'profile' }
  * });
+ *
+ * // Use with custom types
+ * interface CustomApiTypes extends ApiTyping {
+ *   paths: {
+ *     "/custom/{id}": {
+ *       get: {
+ *         parameters: { path: { id: string } };
+ *         responses: { 200: { content: { "application/json": { name: string } } } };
+ *       };
+ *     };
+ *   };
+ *   components: {};
+ *   operations: {};
+ *   external: {};
+ * }
+ * 
+ * const customApi = createHTTPClient<CustomApiTypes>();
  * ```
  */
-export const createHTTPClient = <T extends CreateHTTPClientConfig>(
-  config?: T,
+export const createHTTPClient = <
+  TMeta extends ApiTyping = ApiTypingMeta,
+  TConfig extends CreateHTTPClientConfig = CreateHTTPClientConfig
+>(
+  config?: TConfig,
 ) => {
   const rootConfig = config || ({} as T)
   const modifiedAxios =
@@ -162,97 +184,97 @@ export const createHTTPClient = <T extends CreateHTTPClientConfig>(
   }
 
   const post = <
-    T extends PathKeyOfMethod<"post">,
-    S extends StatusOfPathKeyOfMethod<"post", T> = Extract<
-      StatusOfPathKeyOfMethod<"post", T>,
+    T extends PathKeyOfMethod<"post", TMeta>,
+    S extends StatusOfPathKeyOfMethod<"post", T, TMeta> = Extract<
+      StatusOfPathKeyOfMethod<"post", T, TMeta>,
       200
     >,
   >(
-    ...[url, data, config]: PostArgs<T>
+    ...[url, data, config]: PostArgs<T, TMeta>
   ): Promise<
-    AxiosResponse<ExtractMethodResponseStatusContentJSON<"post", S, T>>
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"post", S, T, TMeta>>
   > => {
     return api.request(getOptions("post", url, data, config))
   }
 
   const put = <
-    T extends PathKeyOfMethod<"put">,
-    S extends StatusOfPathKeyOfMethod<"put", T> = Extract<
-      StatusOfPathKeyOfMethod<"put", T>,
+    T extends PathKeyOfMethod<"put", TMeta>,
+    S extends StatusOfPathKeyOfMethod<"put", T, TMeta> = Extract<
+      StatusOfPathKeyOfMethod<"put", T, TMeta>,
       200
     >,
   >(
-    ...[url, data, config]: PutArgs<T>
+    ...[url, data, config]: PutArgs<T, TMeta>
   ): Promise<
-    AxiosResponse<ExtractMethodResponseStatusContentJSON<"put", S, T>>
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"put", S, T, TMeta>>
   > => {
     return api.request(getOptions("put", url, data, config))
   }
 
   const patch = <
-    T extends PathKeyOfMethod<"patch">,
-    S extends StatusOfPathKeyOfMethod<"patch", T> = Extract<
-      StatusOfPathKeyOfMethod<"patch", T>,
+    T extends PathKeyOfMethod<"patch", TMeta>,
+    S extends StatusOfPathKeyOfMethod<"patch", T, TMeta> = Extract<
+      StatusOfPathKeyOfMethod<"patch", T, TMeta>,
       200
     >,
   >(
-    ...[url, data, config]: PatchArgs<T>
+    ...[url, data, config]: PatchArgs<T, TMeta>
   ): Promise<
-    AxiosResponse<ExtractMethodResponseStatusContentJSON<"patch", S, T>>
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"patch", S, T, TMeta>>
   > => {
     return api.request(getOptions("patch", url, data, config))
   }
 
   const del = <
-    T extends PathKeyOfMethod<"delete">,
-    S extends StatusOfPathKeyOfMethod<"delete", T> = Extract<
-      StatusOfPathKeyOfMethod<"delete", T>,
+    T extends PathKeyOfMethod<"delete", TMeta>,
+    S extends StatusOfPathKeyOfMethod<"delete", T, TMeta> = Extract<
+      StatusOfPathKeyOfMethod<"delete", T, TMeta>,
       200
     >,
   >(
-    ...[url, data, config]: DelArgs<T>
+    ...[url, data, config]: DelArgs<T, TMeta>
   ): Promise<
-    AxiosResponse<ExtractMethodResponseStatusContentJSON<"delete", S, T>>
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"delete", S, T, TMeta>>
   > => {
     return api.request(getOptions("delete", url, data, config))
   }
 
   const get = <
-    T extends PathKeyOfMethod<"get">,
-    S extends StatusOfPathKeyOfMethod<"get", T> = Extract<
-      StatusOfPathKeyOfMethod<"get", T>,
+    T extends PathKeyOfMethod<"get", TMeta>,
+    S extends StatusOfPathKeyOfMethod<"get", T, TMeta> = Extract<
+      StatusOfPathKeyOfMethod<"get", T, TMeta>,
       200
     >,
   >(
-    ...[url, config]: GetArgs<T>
+    ...[url, config]: GetArgs<T, TMeta>
   ): Promise<
-    AxiosResponse<ExtractMethodResponseStatusContentJSON<"get", S, T>>
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"get", S, T, TMeta>>
   > => {
     return api.request(getOptions("get", url, undefined, config))
   }
 
   const head = <
-    T extends PathKeyOfMethod<"head">,
-    S extends StatusOfPathKeyOfMethod<"head", T> = Extract<
-      StatusOfPathKeyOfMethod<"head", T>,
+    T extends PathKeyOfMethod<"head", TMeta>,
+    S extends StatusOfPathKeyOfMethod<"head", T, TMeta> = Extract<
+      StatusOfPathKeyOfMethod<"head", T, TMeta>,
       200
     >,
   >(
-    ...[url, config]: HeadArgs<T>
+    ...[url, config]: HeadArgs<T, TMeta>
   ): Promise<
-    AxiosResponse<ExtractMethodResponseStatusContentJSON<"head", S, T>>
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"head", S, T, TMeta>>
   > => api.request(getOptions("head", url, undefined, config))
 
   const options = <
-    T extends PathKeyOfMethod<"options">,
-    S extends StatusOfPathKeyOfMethod<"options", T> = Extract<
-      StatusOfPathKeyOfMethod<"options", T>,
+    T extends PathKeyOfMethod<"options", TMeta>,
+    S extends StatusOfPathKeyOfMethod<"options", T, TMeta> = Extract<
+      StatusOfPathKeyOfMethod<"options", T, TMeta>,
       200
     >,
   >(
-    ...[url, config]: OptionsArgs<T>
+    ...[url, config]: OptionsArgs<T, TMeta>
   ): Promise<
-    AxiosResponse<ExtractMethodResponseStatusContentJSON<"options", S, T>>
+    AxiosResponse<ExtractMethodResponseStatusContentJSON<"options", S, T, TMeta>>
   > => api.request(getOptions("options", url, undefined, config))
 
   const apiTyping = {
@@ -341,4 +363,4 @@ export const createHTTPClient = <T extends CreateHTTPClientConfig>(
 /**
  * ApiTypingInstance
  */
-export type ApiTypingInstance = ReturnType<typeof createHTTPClient>
+export type ApiTypingInstance<TMeta extends ApiTyping = ApiTypingMeta> = ReturnType<typeof createHTTPClient<TMeta>>
