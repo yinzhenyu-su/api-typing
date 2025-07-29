@@ -5,7 +5,10 @@ interface ApiTyping {
   external: Record<string, any>
 }
 
-export declare interface ApiTypingMeta<T extends ApiTyping = ApiTyping> extends T {}
+export type { ApiTyping }
+
+// Default ApiTypingMeta interface (for backward compatibility)
+export declare interface ApiTypingMeta extends ApiTyping {}
 
 type paths<T extends ApiTyping = ApiTypingMeta> = T["paths"]
 
@@ -64,7 +67,7 @@ type ExtractMethod<
   M extends Method,
   R extends PathKeyOfMethod<M, T>,
   T extends ApiTyping = ApiTypingMeta,
-> = A<R, T>[Extract<keyof A<R, T>, M>]
+> = Paths<T>[R][Extract<keyof Paths<T>[R], M>]
 
 // 定义一个类型 ExtractMethodParam，用于从给定的方法类型 T 中提取特定路径键 R 对应的参数类型
 type ExtractMethodParam<

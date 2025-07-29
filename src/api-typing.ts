@@ -136,7 +136,7 @@ export const createHTTPClient = <
 >(
   config?: TConfig,
 ) => {
-  const rootConfig = config || ({} as T)
+  const rootConfig = config || ({} as TConfig)
   const modifiedAxios =
     config?.axiosFactory?.(axios.create(config)) || axios.create(config)
   const api = modifiedAxios
@@ -194,7 +194,7 @@ export const createHTTPClient = <
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"post", S, T, TMeta>>
   > => {
-    return api.request(getOptions("post", url, data, config))
+    return api.request(getOptions("post", url as string, data, config))
   }
 
   const put = <
@@ -208,7 +208,7 @@ export const createHTTPClient = <
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"put", S, T, TMeta>>
   > => {
-    return api.request(getOptions("put", url, data, config))
+    return api.request(getOptions("put", url as string, data, config))
   }
 
   const patch = <
@@ -222,7 +222,7 @@ export const createHTTPClient = <
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"patch", S, T, TMeta>>
   > => {
-    return api.request(getOptions("patch", url, data, config))
+    return api.request(getOptions("patch", url as string, data, config))
   }
 
   const del = <
@@ -236,7 +236,7 @@ export const createHTTPClient = <
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"delete", S, T, TMeta>>
   > => {
-    return api.request(getOptions("delete", url, data, config))
+    return api.request(getOptions("delete", url as string, data, config))
   }
 
   const get = <
@@ -250,7 +250,7 @@ export const createHTTPClient = <
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"get", S, T, TMeta>>
   > => {
-    return api.request(getOptions("get", url, undefined, config))
+    return api.request(getOptions("get", url as string, undefined, config))
   }
 
   const head = <
@@ -263,7 +263,7 @@ export const createHTTPClient = <
     ...[url, config]: HeadArgs<T, TMeta>
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"head", S, T, TMeta>>
-  > => api.request(getOptions("head", url, undefined, config))
+  > => api.request(getOptions("head", url as string, undefined, config))
 
   const options = <
     T extends PathKeyOfMethod<"options", TMeta>,
@@ -275,7 +275,7 @@ export const createHTTPClient = <
     ...[url, config]: OptionsArgs<T, TMeta>
   ): Promise<
     AxiosResponse<ExtractMethodResponseStatusContentJSON<"options", S, T, TMeta>>
-  > => api.request(getOptions("options", url, undefined, config))
+  > => api.request(getOptions("options", url as string, undefined, config))
 
   const apiTyping = {
     ...api,
