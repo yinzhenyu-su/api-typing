@@ -4,10 +4,7 @@ dist
 outdir
 *.log
 *.tsbuildinfo
-api-typing.d.ts
-api-typing-meta.d.ts
-api-typing-meta.json
-api-typing-meta.openapi.json
+api-typing-meta*
 docs/.vitepress/cache
 
 .vitepress/cache
