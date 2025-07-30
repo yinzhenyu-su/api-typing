@@ -1,1 +1,0 @@
-import{_ as i,o as a,c as n,ae as t}from"./chunks/framework.nQCaO3ND.js";const E=JSON.parse('{"title":"问题解答","description":"","frontmatter":{},"headers":[],"relativePath":"question/qa.md","filePath":"question/qa.md"}'),e={name:"question/qa.md"};function p(l,s,h,k,r,d){return a(),n("div",null,s[0]||(s[0]=[t("",4)]))}const c=i(e,[["render",p]]);export{E as __pageData,c as default};

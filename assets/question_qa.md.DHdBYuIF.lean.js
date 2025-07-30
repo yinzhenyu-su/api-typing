@@ -1,0 +1,1 @@
+import{_ as i,c as a,o as n,ae as t}from"./chunks/framework.Dgg8-8ov.js";const E=JSON.parse('{"title":"问题解答","description":"","frontmatter":{},"headers":[],"relativePath":"question/qa.md","filePath":"question/qa.md"}'),e={name:"question/qa.md"};function p(l,s,h,k,r,d){return n(),a("div",null,s[0]||(s[0]=[t("",4)]))}const c=i(e,[["render",p]]);export{E as __pageData,c as default};
