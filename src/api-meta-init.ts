@@ -30,7 +30,15 @@ const importTemplate = `/* eslint-disable */
 // @ts-nocheck
 import "api-typing"`
 
-const declareTemplate = `declare module "api-typing" {
+const declareTemplate = `
+export interface ApiTypingMeta {
+  paths: paths;
+  components: components;
+  operations: operations;
+  external: external;
+}
+
+declare module "api-typing" {
   export interface ApiTypingMeta {
     paths: paths;
     components: components;
@@ -54,7 +62,7 @@ const mergeOpenAPISchemas = (schemas: any[]): any => {
     info: {
       title: "Merged API",
       version: "1.0.0",
-      description: "Merged from multiple OpenAPI schemas"
+      description: "Merged from multiple OpenAPI schemas",
     },
     paths: {},
     components: {
@@ -66,10 +74,10 @@ const mergeOpenAPISchemas = (schemas: any[]): any => {
       headers: {},
       securitySchemes: {},
       links: {},
-      callbacks: {}
+      callbacks: {},
     },
     tags: [],
-    servers: []
+    servers: [],
   }
 
   // Merge each schema
@@ -78,7 +86,7 @@ const mergeOpenAPISchemas = (schemas: any[]): any => {
 
     // Merge paths
     if (schema.paths) {
-      Object.keys(schema.paths).forEach(pathKey => {
+      Object.keys(schema.paths).forEach((pathKey) => {
         if (mergedSchema.paths[pathKey]) {
           // Path already exists, merge the methods
           Object.assign(mergedSchema.paths[pathKey], schema.paths[pathKey])
@@ -90,11 +98,14 @@ const mergeOpenAPISchemas = (schemas: any[]): any => {
 
     // Merge components
     if (schema.components) {
-      Object.keys(schema.components).forEach(componentType => {
-        if (schema.components[componentType] && typeof schema.components[componentType] === 'object') {
+      Object.keys(schema.components).forEach((componentType) => {
+        if (
+          schema.components[componentType] &&
+          typeof schema.components[componentType] === "object"
+        ) {
           Object.assign(
             mergedSchema.components[componentType] || {},
-            schema.components[componentType]
+            schema.components[componentType],
           )
         }
       })
@@ -103,7 +114,11 @@ const mergeOpenAPISchemas = (schemas: any[]): any => {
     // Merge tags
     if (schema.tags && Array.isArray(schema.tags)) {
       schema.tags.forEach((tag: any) => {
-        if (!mergedSchema.tags.find((existingTag: any) => existingTag.name === tag.name)) {
+        if (
+          !mergedSchema.tags.find(
+            (existingTag: any) => existingTag.name === tag.name,
+          )
+        ) {
           mergedSchema.tags.push(tag)
         }
       })
@@ -112,7 +127,11 @@ const mergeOpenAPISchemas = (schemas: any[]): any => {
     // Merge servers
     if (schema.servers && Array.isArray(schema.servers)) {
       schema.servers.forEach((server: any) => {
-        if (!mergedSchema.servers.find((existingServer: any) => existingServer.url === server.url)) {
+        if (
+          !mergedSchema.servers.find(
+            (existingServer: any) => existingServer.url === server.url,
+          )
+        ) {
           mergedSchema.servers.push(server)
         }
       })
@@ -169,24 +188,28 @@ export const getDefinition = async ({
 }: InitOptions) => {
   try {
     // Handle backward compatibility: if jsonSchemaPath is provided, use it
-    const schemaPaths = jsonSchemaPaths || (jsonSchemaPath ? [jsonSchemaPath] : [])
-    
+    const schemaPaths =
+      jsonSchemaPaths || (jsonSchemaPath ? [jsonSchemaPath] : [])
+
     if (schemaPaths.length === 0) {
       throw new Error("No schema paths provided")
     }
 
     console.log(`Loading ${schemaPaths.length} OpenAPI schema(s)...`)
-    
+
     // Load all schemas
     const schemas = await Promise.all(
       schemaPaths.map(async (schemaPath, index) => {
-        console.log(`Loading schema ${index + 1}/${schemaPaths.length}: ${schemaPath}`)
+        console.log(
+          `Loading schema ${index + 1}/${schemaPaths.length}: ${schemaPath}`,
+        )
         return await loadSchema(schemaPath)
-      })
+      }),
     )
 
     // Merge schemas if multiple, or use single schema
-    const finalSchema = schemas.length > 1 ? mergeOpenAPISchemas(schemas) : schemas[0]
+    const finalSchema =
+      schemas.length > 1 ? mergeOpenAPISchemas(schemas) : schemas[0]
 
     // Save merged openapi json to local
     writeFileSync(
