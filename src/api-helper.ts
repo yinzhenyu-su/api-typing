@@ -10,14 +10,15 @@ export type { ApiTyping }
 // Default ApiTypingMeta interface (for backward compatibility)
 export declare interface ApiTypingMeta extends ApiTyping {}
 
-type paths<T extends ApiTyping = ApiTypingMeta> = T["paths"]
-
 type Paths<T extends ApiTyping = ApiTypingMeta> = T["paths"]
 
 /**
  * 根据 http method 获取对应的urlkey
  */
-export type PathKeyOfMethod<R extends Method, T extends ApiTyping = ApiTypingMeta> = {
+export type PathKeyOfMethod<
+  R extends Method,
+  T extends ApiTyping = ApiTypingMeta,
+> = {
   [Key in keyof Paths<T>]: Paths<T>[Key] extends {
     // eslint-disable-next-line no-unused-vars
     [k in R]: any
@@ -51,8 +52,6 @@ export type PathKeyUnion<T extends ApiTyping = ApiTypingMeta> =
   | PathKeyOfMethod<"head", T>
   | PathKeyOfMethod<"options", T>
 
-type A<K extends PathKeyUnion<T>, T extends ApiTyping = ApiTypingMeta> = Paths<T>[K]
-
 export type Method =
   | "get"
   | "post"
@@ -83,7 +82,10 @@ export type ExtractParamPath<
   M extends Method,
   R extends PathKeyOfMethod<M, T>,
   T extends ApiTyping = ApiTypingMeta,
-> = ExtractMethodParam<M, R, T>[Extract<keyof ExtractMethodParam<M, R, T>, "path">]
+> = ExtractMethodParam<M, R, T>[Extract<
+  keyof ExtractMethodParam<M, R, T>,
+  "path"
+>]
 
 /**
  * 根据 url 和 http method 提取request query 传参
@@ -92,7 +94,10 @@ export type ExtractParamQuery<
   M extends Method,
   R extends PathKeyOfMethod<M, T>,
   T extends ApiTyping = ApiTypingMeta,
-> = ExtractMethodParam<M, R, T>[Extract<keyof ExtractMethodParam<M, R, T>, "query">]
+> = ExtractMethodParam<M, R, T>[Extract<
+  keyof ExtractMethodParam<M, R, T>,
+  "query"
+>]
 
 // ---------------------- request body start ----------------------
 /**
@@ -208,7 +213,10 @@ type ExtractMethodResponse200<
   M extends Method,
   R extends PathKeyOfMethod<M, T>,
   T extends ApiTyping = ApiTypingMeta,
-> = ExtractMethodResponse<M, R, T>[Extract<keyof ExtractMethodResponse<M, R, T>, 200>]
+> = ExtractMethodResponse<M, R, T>[Extract<
+  keyof ExtractMethodResponse<M, R, T>,
+  200
+>]
 
 type ExtractMethodResponse200Content<
   M extends Method,

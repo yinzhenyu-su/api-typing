@@ -17,7 +17,7 @@ const pet: Meta["Pet"] = { id: 1, name: "", tag: "" }
 
 ### 泛型支持
 
-从 v0.1.1 开始，ApiTypingMeta 支持泛型参数，允许您定义自定义的 API 类型：
+从 v1.17.0 开始，ApiTypingMeta 支持泛型参数，允许您定义自定义的 API 类型：
 
 ```typescript
 import { createHTTPClient, type ApiTyping } from "api-typing"

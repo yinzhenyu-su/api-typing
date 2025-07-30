@@ -57,6 +57,10 @@ export default defineConfig({
                 text: "提取查询字符串类型",
                 link: "/pro/extract-request-query-json",
               },
+              {
+                text: "接口类型泛型支持",
+                link: "/pro/generic-support",
+              },
             ],
           },
           {
