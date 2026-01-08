@@ -1,12 +1,18 @@
 import { computed, ref } from "@vue/reactivity"
 
 class GlobalStatus {
-  #urls = ref([] as string[])
+  #urls = ref(new Map<string, number>())
 
   /**
-   * 当前请求数
+   * 当前请求数（总计数）
    */
-  public requestCount = computed(() => this.#urls.value.length)
+  public requestCount = computed(() => {
+    let total = 0
+    this.#urls.value.forEach((count) => {
+      total += count
+    })
+    return total
+  })
 
   /**
    * 是否正在请求
@@ -16,25 +22,42 @@ class GlobalStatus {
   })
 
   incrementRequestCount(url: string) {
-    this.#urls.value.push(url)
+    const count = this.#urls.value.get(url) || 0
+    this.#urls.value.set(url, count + 1)
   }
 
   decrementRequestCount(url: string) {
-    let index = this.#urls.value.indexOf(url)
-    if (index > -1) {
-      this.#urls.value.splice(index, 1)
+    const count = this.#urls.value.get(url) || 0
+    if (count > 1) {
+      this.#urls.value.set(url, count - 1)
+    } else if (count === 1) {
+      this.#urls.value.delete(url)
     }
   }
 
   resetRequestCount() {
-    this.#urls.value = []
+    this.#urls.value.clear()
   }
 
   /**
    * 获取特定 URL 的请求计数
    */
   getRequestCount(url: string): number {
-    return this.#urls.value.filter((u) => u === url).length
+    return this.#urls.value.get(url) || 0
+  }
+
+  /**
+   * 直接获取 inRequest 的布尔值（无需 .value）
+   */
+  getInRequest(): boolean {
+    return this.inRequest.value
+  }
+
+  /**
+   * 直接获取请求计数值（无需 .value）
+   */
+  getRequestCountValue(): number {
+    return this.requestCount.value
   }
 
   static #instance: GlobalStatus

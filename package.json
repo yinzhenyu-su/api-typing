@@ -47,28 +47,28 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/lodash": "^4.17.16",
+    "@types/lodash": "^4.17.21",
     "@types/node": "^22.15.1",
-    "@types/qs": "^6.9.18",
-    "@vue/reactivity": "^3.5.17",
-    "axios": "^1.10.0",
+    "@types/qs": "^6.14.0",
+    "@vue/reactivity": "^3.5.26",
+    "axios": "^1.13.2",
     "lodash": "^4.17.21",
-    "openapi-typescript": "^7.3.0",
-    "qs": "^6.14.0"
+    "openapi-typescript": "^7.9.1",
+    "qs": "^6.14.1"
   },
   "devDependencies": {
     "@egoist/prettier-config": "1.0.0",
     "@stackblitz/sdk": "^1.11.0",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
-    "prettier": "3.5.3",
+    "prettier": "3.7.4",
     "ts-node": "^10.9.2",
-    "tsup": "^8.5.0",
-    "typescript": "5.8.3",
-    "vitepress": "1.6.3",
+    "tsup": "^8.5.1",
+    "typescript": "5.9.3",
+    "vitepress": "^1.6.4",
     "vitest": "3.2.4",
-    "vue": "^3.5.17",
-    "zx": "^8.7.1"
+    "vue": "^3.5.26",
+    "zx": "^8.8.5"
   },
   "volta": {
     "node": "22.15.0"
