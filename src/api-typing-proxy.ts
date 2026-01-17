@@ -19,7 +19,7 @@ export type ProxyConfig = AxiosRequestConfig & {
 
 export const requestProxyHandler = {
   apply: function (target: any, thisArg: any, argumentList: ProxyConfig[]) {
-    const requestOption = argumentList[0]
+    const requestOption = argumentList[0]!
     if (!requestOption.url) {
       requestOption.url = ""
     }
@@ -41,13 +41,13 @@ export const requestProxyHandler = {
       requestOption.baseURL = requestOption.mockBaseURL
     }
 
-    delete requestOption.params
-    delete requestOption.query
-    delete requestOption.mock
-    delete requestOption.mockBaseURL
-    delete requestOption.__is_config
-    delete requestOption.__is_data
-    delete requestOption.stringifyOptions
+    delete requestOption?.params
+    delete requestOption?.query
+    delete requestOption?.mock
+    delete requestOption?.mockBaseURL
+    delete requestOption?.__is_config
+    delete requestOption?.__is_data
+    delete requestOption?.stringifyOptions
 
     return target(requestOption)
   },
