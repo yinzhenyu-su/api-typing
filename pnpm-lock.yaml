@@ -63,9 +63,6 @@ importers:
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.1)(@vitest/ui@3.2.4)(jsdom@24.1.1)
-      vue:
-        specifier: ^3.5.26
-        version: 3.5.26(typescript@5.9.3)
       zx:
         specifier: ^8.8.5
         version: 8.8.5
